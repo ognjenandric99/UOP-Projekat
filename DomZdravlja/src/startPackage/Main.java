@@ -13,7 +13,8 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-			System.out.println("LOGIN FUNKCIJA");
+		System.out.println("LOGIN FUNKCIJA22222");
+		System.out.println("LOGIN FUNKCIJA22222");
 			String accountovi = getText("src/accounts/accounts.txt");
 			System.out.println(accountovi);
 	}
