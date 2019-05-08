@@ -20,7 +20,7 @@ public class Doktor extends Korisnik {
 		Specijalizacija = specijalizacija;
 		Sluzba = sluzba;
 		System.out.println("Doktor : "+ime+" "+prezime);
-		System.out.println("Izaberite opciju koju zelite :\n\t1)Pogledaj Spisak Pregleda\n\t2)Promeni stanje pregleda");
+		System.out.println("Izaberite opciju koju zelite :\n\t1)Pogledaj Spisak Pregleda\n\t2)Promeni stanje pregleda\n\t0)Log Out");
 	}
 	
 	public void pogledajSpisakPregleda() {

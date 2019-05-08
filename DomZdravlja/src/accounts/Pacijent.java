@@ -8,7 +8,7 @@ public class Pacijent extends Korisnik {
 		super(ime, prezime, jmbg, adresa, brojTelefona, username, password, uloga, pol);
 		this.lekar = lekar;
 		System.out.println("Pacijent : "+ime+" "+prezime);
-		System.out.println("Izaberite opciju koju zelite :\n\t1)Pitaj za pregled\n\t2)Pogledaj Spisak Pregleda\n\t3)Pogledaj Spisak Racuna");
+		System.out.println("Izaberite opciju koju zelite :\n\t1)Pitaj za pregled\n\t2)Pogledaj Spisak Pregleda\n\t3)Pogledaj Spisak Racuna\n\t0)Log Out");
 		
 	}
 	public static void pitajZaPregled() {

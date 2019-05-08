@@ -11,7 +11,7 @@ public class MedicinskaSestra extends Korisnik {
 		super(ime, prezime, jmbg, adresa, brojTelefona, username, password, uloga, pol);
 		Plata = plata;
 		Sluzba = sluzba;
-		System.out.println("Izaberite opciju koju zelite :\n\t1)Dodaj Korisnika\n\t2)Zakazi Pregled\n\t3)Izdaj Racuns\n\t4)Ispisi usere");
+		System.out.println("Izaberite opciju koju zelite :\n\t1)Dodaj Korisnika\n\t2)Zakazi Pregled\n\t3)Izdaj Racuns\n\t4)Ispisi usere\n\t0)Log Out");
 
 	}
 
