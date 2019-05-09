@@ -10,15 +10,15 @@ public abstract class Korisnik {
 	public Korisnik(String ime, String prezime, String jmbg, String adresa, String brojTelefona, String username,
 			String password, String uloga, Boolean pol) {
 		super();
-		Ime = ime;
-		Prezime = prezime;
-		Jmbg = jmbg;
-		Adresa = adresa;
-		BrojTelefona = brojTelefona;
-		Username = username;
-		Password = password;
-		Uloga = uloga;
-		Pol = pol;
+		this.Ime = ime;
+		this.Prezime = prezime;
+		this.Jmbg = jmbg;
+		this.Adresa = adresa;
+		this.BrojTelefona = brojTelefona;
+		this.Username = username;
+		this.Password = password;
+		this.Uloga = uloga;
+		this.Pol = pol;
 	}
 	
 	public static String getText(String path) {

@@ -2,15 +2,13 @@ package accounts;
 
 import startPackage.SluzbaSestre;
 
-public class MedicinskaSestra extends Korisnik {
-	private int Plata;
+public class MedicinskaSestra extends Zaposleni {
 	private SluzbaSestre Sluzba;
 
 	public MedicinskaSestra(String ime, String prezime, String jmbg, String adresa, String brojTelefona,
 			String username, String password, String uloga, Boolean pol, int plata, SluzbaSestre sluzba) {
-		super(ime, prezime, jmbg, adresa, brojTelefona, username, password, uloga, pol);
-		Plata = plata;
-		Sluzba = sluzba;
+		super(ime, prezime, jmbg, adresa, brojTelefona, username, password, uloga, pol, plata);
+		this.Sluzba = sluzba;
 		System.out.println("Izaberite opciju koju zelite :\n\t1)Dodaj Korisnika\n\t2)Zakazi Pregled\n\t3)Izdaj Racuns\n\t4)Ispisi usere\n\t0)Log Out");
 
 	}
