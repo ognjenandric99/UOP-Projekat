@@ -15,7 +15,14 @@ public class MedicinskaSestra extends Zaposleni {
 
 
 	public void dodajKorisnika() {
-		System.out.println("DOdat korisnik");
+		try {
+			File file = new File("src/accounts/accounts.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer.write("BUDI|BUDI123|123456789123|Pacijent|Ognjen|Andric|Malina 13, Sremska Kamenica|0615561450|true");
+			writer.close();
+			} catch (IOException e) {
+			e.printStackTrace();
+			}
 	}
 	public void zakaziPregled() {
 		System.out.println("Zakazat pregled.");
