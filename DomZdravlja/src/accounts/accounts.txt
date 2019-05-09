@@ -1,3 +1,6 @@
-BUDI|BUDI123|2411999800014|Pacijent|Ognjen|Andric|Malina 13, Sremska Kamenica|0615561450|false
-BUDIdoktor|BUDI123doktor|22041976800052|Dokstor|Ognjen|Andric|Malina 13, Sremska Kamenica|0615561450|false
-BUDI222|BUDI123222|1423999800054|MedicinskaSestra|Ognjen|Andric|Malina 13, Sremska Kamenica|0615561450|false
+MSestra|MSestra1|1233332112|MedicinskaSestra|Korisnik|Proba|ADresica|555333|true
+Doktor|Doktor1|1233332112|Pacijent|Korisnik|Proba|ADresica|555333|true
+Pacijent|Pacijent1|1233332112|Pacijent|Korisnik|Proba|ADresica|555333|true
+KorisnikProba|KorisnikProba1|1233332112|Pacijent|Korisnik|Proba|ADresica|555333|true
+KorisnikProba|KorisnikProba1|1233332112|Pacijent|Korisnik|Proba|ADresica|555333|true
+KorisnikProba|KorisnikProba1|1233332112|Pacijent|Korisnik|Proba|ADresica|555333|true

@@ -29,7 +29,24 @@ public abstract class Korisnik {
 			String line;
 			
 			while((line=reader.readLine())!=null) {
-				getTextText = getTextText + line;
+				getTextText = getTextText + line+";";
+			}
+			
+		}
+		catch (Exception e){
+			System.out.println("Path ne valja!");
+		}
+		return getTextText;
+	}
+	public static String getText1(String path) {
+		String getTextText = "";
+		try {
+			File file = new File(path);
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line;
+			
+			while((line=reader.readLine())!=null) {
+				getTextText = getTextText + line+"\n";
 			}
 			
 		}
