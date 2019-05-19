@@ -1,5 +1,5 @@
 package startPackage;
-//sxasd
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -31,7 +31,7 @@ public class Main {
 		
 		//Cisto da izbacim error
 		String izabranilekar="";
-		String Sluzba = "";
+		String Sluzba_1 = "";
 		Integer Plata = 0;
 		String Specijalizacija = "";
 		//Zavrsava se uzimanje podataka
@@ -84,14 +84,14 @@ public class Main {
 						
 						String[] SluzbaSestre = SluzbaSestreRed.split("\\|");
 						if(SluzbaSestre[0].equals(accountovi2[2])) {
-							 Sluzba = SluzbaSestre[1];
+							 Sluzba_1 = SluzbaSestre[1];
 							 Plata = Integer.parseInt(SluzbaSestre[2]);
 						}
 					}
 					
 					
 					MedicinskaSestra User = new MedicinskaSestra(accountovi2[4], accountovi2[5], accountovi2[2],accountovi2[6],accountovi2[7], accountovi2[0],
-							accountovi2[1], accountovi2[3],Boolean.parseBoolean(accountovi2[8]), Plata , SluzbaSestre.valueOf("SluzbaOpsteMedicine"));
+							accountovi2[1], accountovi2[3],Boolean.parseBoolean(accountovi2[8]), Plata , SluzbaSestre.valueOf(Sluzba_1));
 					scanner.close();
 					
 					
@@ -119,19 +119,14 @@ public class Main {
 						
 						String[] SluzbaISpecDoktora = SluzbaISpecDoktoraRed.split("\\|");
 						if(SluzbaISpecDoktora[0].equals(accountovi2[2])) {
-							 Sluzba = SluzbaISpecDoktora[1];
+							 Sluzba_1 = SluzbaISpecDoktora[1];
 							 Specijalizacija = SluzbaISpecDoktora[2];
 							 Plata = Integer.parseInt(SluzbaISpecDoktora[3]);
 						}
 					}
-					/**
-					 * 
-					 * Moram da odradim za Pregled da vidim kako izgleda datetime, i sve ostalo
-					 * 
-					Doktor User = new Doktor(accountovi2[4], accountovi2[5], accountovi2[2],accountovi2[6],accountovi2[7], accountovi2[0],
-							accountovi2[1], accountovi2[3],Boolean.parseBoolean(accountovi2[8]), ArrayList<Pregled> listaPregleda, int plata,
-							String specijalizacija, startPackage.Sluzba sluzba);**/
 					
+					Doktor User = new Doktor(accountovi2[4], accountovi2[5], accountovi2[2],accountovi2[6],accountovi2[7], accountovi2[0],
+							accountovi2[1], accountovi2[3],Boolean.parseBoolean(accountovi2[8]), Plata , Specijalizacija, Sluzba.valueOf(Sluzba_1));
 					
 				}
 				else {
