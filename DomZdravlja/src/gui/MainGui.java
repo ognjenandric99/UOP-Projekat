@@ -127,6 +127,7 @@ public class MainGui extends JFrame {
 		MigLayout mig = new MigLayout("al center center,wrap 2");
 		setLayout(mig);
 		
+		
 	}
 	public static String getText(String path) {
 		String getTextText = "";
@@ -148,7 +149,15 @@ public class MainGui extends JFrame {
 	public void eventsSestra(MedicinskaSestra user) {
 		
 		
-		
+		prikaziProfil.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Profil profil = new Profil(user);
+				profil.setVisible(true);
+			}
+		});
 		
 		logOut.addActionListener(new ActionListener() {
 			

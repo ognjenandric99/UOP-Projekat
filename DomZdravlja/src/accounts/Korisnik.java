@@ -20,7 +20,6 @@ public abstract class Korisnik {
 		this.Uloga = uloga;
 		this.Pol = pol;
 	}
-	
 	public static String getText(String path) {
 		String getTextText = "";
 		try {
@@ -127,5 +126,54 @@ public abstract class Korisnik {
 	public void setPol(Boolean pol) {
 		Pol = pol;
 	}
-
+	public void sacuvajUsera(MedicinskaSestra user, String stanje) {
+		String linija = user.getUsername()+"|"+user.getPassword()+"|"+user.getJmbg()+"|"+user.getUloga()+"|"+user.getIme()+"|"+user.getPrezime()+"|"+user.getAdresa()+"|"+user.getBrojTelefona()+"|"+String.valueOf(user.getPol())+"|"+stanje;
+		String text = "";
+		String fajl = getText("src/accounts/accounts.txt");
+		String[] fajllinije = fajl.split("\\;");
+		for(int i=0;i<fajllinije.length;i++) {
+			String[] trAcc = fajllinije[i].split("\\|");
+			if(trAcc[0].equalsIgnoreCase(user.getUsername())) {
+				text = text + linija+"\n";
+			}
+			else {
+				text = text + fajllinije[i]+"\n";
+			}
+		}
+		System.out.println(text);
+	}
+	public void sacuvajUsera(Pacijent user, String stanje) {
+		String linija = user.getUsername()+"|"+user.getPassword()+"|"+user.getJmbg()+"|"+user.getUloga()+"|"+user.getIme()+"|"+user.getPrezime()+"|"+user.getAdresa()+"|"+user.getBrojTelefona()+"|"+String.valueOf(user.getPol())+"|"+stanje;
+		String text = "";
+		String fajl = getText("src/accounts/accounts.txt");
+		String[] fajllinije = fajl.split("\\;");
+		for(int i=0;i<fajllinije.length;i++) {
+			String[] trAcc = fajllinije[i].split("\\|");
+			if(trAcc[0].equalsIgnoreCase(user.getUsername())) {
+				text = text + linija+"\n";
+			}
+			else {
+				text = text + fajllinije[i]+"\n";
+			}
+		}
+		System.out.println(text);
+	}
+	public void sacuvajUsera(Doktor user, String stanje) {
+		String linija = user.getUsername()+"|"+user.getPassword()+"|"+user.getJmbg()+"|"+user.getUloga()+"|"+user.getIme()+"|"+user.getPrezime()+"|"+user.getAdresa()+"|"+user.getBrojTelefona()+"|"+String.valueOf(user.getPol())+"|"+stanje;
+		String text = "";
+		String fajl = getText("src/accounts/accounts.txt");
+		String[] fajllinije = fajl.split("\\;");
+		for(int i=0;i<fajllinije.length;i++) {
+			String[] trAcc = fajllinije[i].split("\\|");
+			if(trAcc[0].equalsIgnoreCase(user.getUsername())) {
+				text = text + linija+"\n";
+			}
+			else {
+				text = text + fajllinije[i]+"\n";
+			}
+		}
+		System.out.println(text);
+	}
+	
+	
 }
