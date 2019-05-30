@@ -56,4 +56,76 @@ public abstract class Korisnik {
 		return getTextText;
 	}
 
+	public String getIme() {
+		return Ime;
+	}
+
+	public void setIme(String ime) {
+		Ime = ime;
+	}
+
+	public String getPrezime() {
+		return Prezime;
+	}
+
+	public void setPrezime(String prezime) {
+		Prezime = prezime;
+	}
+
+	public String getJmbg() {
+		return Jmbg;
+	}
+
+	public void setJmbg(String jmbg) {
+		Jmbg = jmbg;
+	}
+
+	public String getAdresa() {
+		return Adresa;
+	}
+
+	public void setAdresa(String adresa) {
+		Adresa = adresa;
+	}
+
+	public String getBrojTelefona() {
+		return BrojTelefona;
+	}
+
+	public void setBrojTelefona(String brojTelefona) {
+		BrojTelefona = brojTelefona;
+	}
+
+	public String getUsername() {
+		return Username;
+	}
+
+	public void setUsername(String username) {
+		Username = username;
+	}
+
+	public String getPassword() {
+		return Password;
+	}
+
+	public void setPassword(String password) {
+		Password = password;
+	}
+
+	public String getUloga() {
+		return Uloga;
+	}
+
+	public void setUloga(String uloga) {
+		Uloga = uloga;
+	}
+
+	public Boolean getPol() {
+		return Pol;
+	}
+
+	public void setPol(Boolean pol) {
+		Pol = pol;
+	}
+
 }
