@@ -22,11 +22,10 @@ import accounts.MedicinskaSestra;
 import accounts.Pacijent;
 import net.miginfocom.swing.MigLayout;
 
-public class Login extends JFrame {
-	private ArrayList<Pacijent> pacijenti = new ArrayList<Pacijent>();
-	private ArrayList<Doktor> doktori = new ArrayList<Doktor>();
-	private ArrayList<MedicinskaSestra> sestre = new ArrayList<MedicinskaSestra>();
-	
+public class Login extends GuiFunctions {
+	private ArrayList<Pacijent> pacijenti = ucitajPacijente();
+	private ArrayList<Doktor> doktori = ucitajDoktore();
+	private ArrayList<MedicinskaSestra> sestre = ucitajSestre();
 	
 	JLabel lporuka = new JLabel("Dom Zdravlja");
 	JLabel lprazno = new JLabel("");
@@ -52,46 +51,6 @@ public class Login extends JFrame {
 		
 	}
 	
-	public void ucitajPacijente() {
-		String fajl = getText("src/accounts/accounts.txt");
-		String[] accoutnsredovi = fajl.split("\\;");
-		for(int i=0;i<accoutnsredovi.length;i++) {
-			String[] xacc = accoutnsredovi[i].split("\\|");
-			if(xacc[3].equalsIgnoreCase("pacijent")) {
-				Pacijent pac = new Pacijent(xacc[4],xacc[5],xacc[2],xacc[6],xacc[7],xacc[0],xacc[1],xacc[3],Boolean.valueOf(xacc[8]));
-				pacijenti.add(pac);
-				
-				
-			}
-			
-		}
-	}
-	public void ucitajDoktore() {
-		String fajl = getText("src/accounts/accounts.txt");
-		String[] accoutnsredovi = fajl.split("\\;");
-		
-		for(int i=0;i<accoutnsredovi.length;i++) {
-			String[] xacc = accoutnsredovi[i].split("\\|");
-			if(xacc[3].equalsIgnoreCase("Doktor") && xacc[9].equalsIgnoreCase("aktivan")) {
-				Doktor dok = new Doktor(xacc[4],xacc[5],xacc[2],xacc[6],xacc[7],xacc[0],xacc[1],xacc[3],Boolean.valueOf(xacc[8]));
-				doktori.add(dok);
-			}
-			
-		}
-	}
-	public void ucitajSestre() {
-		String fajl = getText("src/accounts/accounts.txt");
-		String[] accoutnsredovi = fajl.split("\\;");
-		
-		for(int i=0;i<accoutnsredovi.length;i++) {
-			String[] xacc = accoutnsredovi[i].split("\\|");
-			if(xacc[3].equalsIgnoreCase("MedicinskaSestra") && xacc[9].equalsIgnoreCase("aktivan")) {
-				MedicinskaSestra ses = new MedicinskaSestra(xacc[4],xacc[5],xacc[2],xacc[6],xacc[7],xacc[0],xacc[1],xacc[3],Boolean.valueOf(xacc[8]));
-				sestre.add(ses);
-			}
-			
-		}
-	}
 	
 	
 	
@@ -121,10 +80,6 @@ public class Login extends JFrame {
 	}
 	
 	public void loginuj() {
-		ucitajPacijente();
-		ucitajDoktore();
-		ucitajSestre();
-		
 		String username = txtusername.getText().trim();
 		String password = String.valueOf(txtpassword.getPassword()).trim();
 		Boolean stanje = false;
@@ -202,21 +157,6 @@ public class Login extends JFrame {
 			}
 		});
 	}
-	public static String getText(String path) {
-		String getTextText = "";
-		try {
-			File file = new File(path);
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-			
-			while((line=reader.readLine())!=null) {
-				getTextText = getTextText + line+";";
-			}
-			
-		}
-		catch (Exception e){
-			System.out.println("Path ne valja!");
-		}
-		return getTextText;
-	}
+	
+	
 }

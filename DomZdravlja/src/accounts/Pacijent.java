@@ -16,4 +16,3 @@ public class Pacijent extends Korisnik {
 		this.lekar = lekar;
 	}
 }
-

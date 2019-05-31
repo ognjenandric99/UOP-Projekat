@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
@@ -25,7 +26,10 @@ import accounts.MedicinskaSestra;
 import net.miginfocom.swing.MigLayout;
 
 
-public class MainGui extends JFrame {
+public class MainGui extends GuiFunctions{
+	private ArrayList<Pacijent> pacijenti = ucitajPacijente();
+	private ArrayList<Doktor> doktori = ucitajDoktore();
+	private ArrayList<MedicinskaSestra> sestre = ucitajSestre();
 	/**Meni Opcije za Medicinsku Sestru**/
 	JMenuBar meniBar = new JMenuBar();
 	JMenu meniKorisnici = new JMenu("Korisnici");
@@ -154,7 +158,17 @@ public class MainGui extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Profil profil = new Profil(user);
+				Profil profil = new Profil(user.getJmbg(),user);
+				profil.setVisible(true);
+			}
+		});
+		
+		dodajKorisnika.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Profil profil = new Profil(user.getJmbg(),user);
 				profil.setVisible(true);
 			}
 		});
