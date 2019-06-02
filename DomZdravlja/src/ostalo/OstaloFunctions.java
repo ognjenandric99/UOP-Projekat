@@ -1,21 +1,15 @@
-package gui;
+package ostalo;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
 import accounts.Doktor;
 import accounts.MedicinskaSestra;
 import accounts.Pacijent;
 
-public class GuiFunctions extends JFrame {
-	private ArrayList<Pacijent> pacijenti = ucitajPacijente();
-	private ArrayList<Doktor> doktori = ucitajDoktore();
-	private ArrayList<MedicinskaSestra> sestre = ucitajSestre();
-	
+public class OstaloFunctions {
 	public ArrayList<Pacijent> ucitajPacijente() {
 		ArrayList<Pacijent> pacijenti1 = new ArrayList<Pacijent>();
 		String fajl = getText("src/accounts/accounts.txt");
@@ -78,23 +72,6 @@ public class GuiFunctions extends JFrame {
 		}
 		return getTextText;
 	}
-	public static String getTextZaNastaviti(String path) {
-		String getTextText = "";
-		try {
-			File file = new File(path);
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-			
-			while((line=reader.readLine())!=null) {
-				getTextText = getTextText + line+"\n";
-			}
-			
-		}
-		catch (Exception e){
-			System.out.println("Path ne valja!");
-		}
-		return getTextText;
-	}
 	public Pacijent jmbgUPacijenta(String jmbg) {
 		ArrayList<Pacijent> pacijenti = ucitajPacijente();
 		for (Pacijent pacijent : pacijenti) {
@@ -125,24 +102,4 @@ public class GuiFunctions extends JFrame {
 		return null;
 	}
 	
-	public Boolean uzmiStanje(String username1) {
-		String username = username1;
-		Boolean vracanje = false;
-		String fajl = getText("src/accounts/accounts.txt");
-		String[] linije = fajl.split("\\;");
-		for(int i=0;i<linije.length;i++) {
-			String[] trAcc = linije[i].split("\\|");
-			if(trAcc[0].equalsIgnoreCase(username) && trAcc[9].equalsIgnoreCase("aktivan")) {
-				vracanje =  true;
-			}
-		}
-		return vracanje;
-	}
-	public Boolean izmeniPacijenta(Pacijent target) {
-		String linijaZaFajlAccounts = target.getUsername()+"|"+target.getPassword()+"|"+target.getJmbg()+"|"+target.getUloga()+"|"+target.getIme()+"|"+target.getPrezime()+"|"+target.getAdresa()+"|"+target.getBrojTelefona()+"|"+target.getPol().toString()+"|"+target.getStanje()+"\n";
-		String linijaZaFajlPacijenti = target.getJmbg()+"|"+target.getLekar().getJmbg()+"\n";
-		return false;
-		
-	}
-
 }

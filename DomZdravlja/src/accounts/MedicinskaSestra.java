@@ -9,12 +9,19 @@ import java.io.IOException;
 public class MedicinskaSestra extends Zaposleni {
 	private SluzbaSestre Sluzba;
 	private int plata;
+	String stanje;
 	public MedicinskaSestra(String ime, String prezime, String jmbg, String adresa, String brojTelefona,
 			String username, String password, String uloga, Boolean pol) {
 		super(ime, prezime, jmbg, adresa, brojTelefona, username, password, uloga, pol);
 		
 		//Pozivam funkcije koje setuju sluzbu i platu da ne bi morao da ih prenosim kao parametre :)
 		namesti(this);
+		if(uzmiStanje(username)) {
+			this.stanje="aktivan";
+		}
+		else {
+			this.stanje = "ugasen";
+		}
 		
 	}
 	public SluzbaSestre getSluzba() {
@@ -40,7 +47,13 @@ public class MedicinskaSestra extends Zaposleni {
 			}
 		}
 	}
-
+	public String getStanje() {
+		return stanje;
+	}
+	public void setStanje(String stanje) {
+		this.stanje=stanje;
+	}
+	
 	
 	
 	

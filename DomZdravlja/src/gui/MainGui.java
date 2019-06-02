@@ -168,7 +168,7 @@ public class MainGui extends GuiFunctions{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Profil profil = new Profil(user.getJmbg(),user);
+				Profil profil = new Profil(null,user);
 				profil.setVisible(true);
 			}
 		});

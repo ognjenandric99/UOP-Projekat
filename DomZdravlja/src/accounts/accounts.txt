@@ -1,4 +1,3 @@
 MSestra|MSestra1|24119999800014|MedicinskaSestra|Korisni2k|Proba|ADresica|555333|true|aktivan
 Doktor|Doktor1|22041976800052|Doktor|Korisnik|Proba|ADresica|555333|true|aktivan
-Pacijent|Pacijent1|1233332112|Pacijent|Korisnik|Proba|ADresica|555333|true|ugasen
-KorisnikProba|KorisnikProba1|1233332112|Pacijent|Korisnik|Proba|ADresica|555333|true|aktivan
+Pacijent|Pacijent1|1233332112|Pacijent|Korisnik|Proba|ADresica|23232323|true|aktivan

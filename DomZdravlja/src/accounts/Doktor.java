@@ -6,10 +6,11 @@ import ostalo.Pregled;
 import startPackage.Sluzba;
 
 public class Doktor extends Zaposleni{
-	private String ListaPregleda;
+	private ArrayList<Pregled> ListaPregleda = new ArrayList<Pregled>();
 	private String Specijalizacija;
 	private Sluzba Sluzba;
 	private int plata;
+	String stanje;
 //Konstruktor za Doktora
 	public Doktor(String ime, String prezime, String jmbg, String adresa, String brojTelefona, String username,
 			String password, String uloga, Boolean pol) {
@@ -17,16 +18,17 @@ public class Doktor extends Zaposleni{
 		super(ime, prezime, jmbg, adresa, brojTelefona, username, password, uloga, pol);
 		namesti(this);
 		getSluzba();
+		this.ListaPregleda = ucitajPreglede(this);
+		if(uzmiStanje(username)) {
+			this.stanje="aktivan";
+		}
+		else {
+			this.stanje = "ugasen";
+		}
 	}
 	
-	public String getListaPregleda() {
-		return ListaPregleda;
-	}
-
-	public void setListaPregleda(String listaPregleda) {
-		ListaPregleda = listaPregleda;
-	}
-
+	
+	
 	public String getSpecijalizacija() {
 		return Specijalizacija;
 	}
@@ -61,6 +63,24 @@ public class Doktor extends Zaposleni{
 				setSluzba(Sluzba.valueOf(acc[1]));
 			}
 		}
+	}
+
+
+
+	public ArrayList<Pregled> getListaPregleda() {
+		return ListaPregleda;
+	}
+
+
+
+	public void setListaPregleda(ArrayList<Pregled> listaPregleda) {
+		ListaPregleda = listaPregleda;
+	}
+	public String getStanje() {
+		return stanje;
+	}
+	public void setStanje(String stanje) {
+		this.stanje=stanje;
 	}
 	
 }

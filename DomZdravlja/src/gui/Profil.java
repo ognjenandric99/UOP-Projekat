@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -75,6 +76,9 @@ public class Profil extends GuiFunctions {
 	private JLabel lUserStatus = new JLabel("Aktivan nalog : ");
 	private JCheckBox checkBoxStatus = new JCheckBox();
 	
+	private JLabel lIzabraniLekar = new JLabel("JMBG izabranog lekara : ");
+	private JTextField txtIzabraniLekarJMBG = new JTextField(20);
+	
 	public Profil(MedicinskaSestra user) {
 		prozor(user);
 	}
@@ -117,6 +121,10 @@ public class Profil extends GuiFunctions {
 		else if(target3!=null) {
 			initGUI(target3,user);
 			eventsSestra(target3,user);
+		}
+		else if(target1==null && target2==null && target3==null) {
+			initGUI(user);
+			eventsSestra(user);
 		}
 		else {
 			System.out.println("Doslo je do greskse prilikom provere da li su objekti prazni kod prozora.");
@@ -163,6 +171,7 @@ public class Profil extends GuiFunctions {
 			comboTip.addItem("MedicinskaSestra");
 			comboTip.addItem("Doktor");
 			add(comboTip);
+			izmenaProzoraZbogTipa();
 			comboTip.setSelectedItem(String.valueOf(target.getUloga()));
 			
 			add(lUserPol);
@@ -175,6 +184,10 @@ public class Profil extends GuiFunctions {
 			else {
 				comboPol.setSelectedItem("Zensko");
 			}
+			
+			add(lIzabraniLekar);
+			txtIzabraniLekarJMBG.setText(target.getLekar().getJmbg());
+			add(txtIzabraniLekarJMBG);
 			
 			checkBoxStatus.setSelected (uzmiStanje(target.getUsername()));
 			add(lUserStatus);add(checkBoxStatus);
@@ -290,6 +303,7 @@ public class Profil extends GuiFunctions {
 		comboTip.addItem("MedicinskaSestra");
 		comboTip.addItem("Doktor");
 		add(comboTip);
+		izmenaProzoraZbogTipa();
 		comboTip.setSelectedItem(String.valueOf(target.getUloga()));
 		
 		add(lUserPol);
@@ -332,7 +346,7 @@ public class Profil extends GuiFunctions {
 		comboTip.addItem("MedicinskaSestra");
 		comboTip.addItem("Doktor");
 		add(comboTip);
-		comboTip.setSelectedItem(null);
+		izmenaProzoraZbogTipa();
 		
 		
 		add(lUserPol);
@@ -340,6 +354,9 @@ public class Profil extends GuiFunctions {
 		comboPol.addItem("Zensko");
 		add(comboPol);
 		comboPol.setSelectedItem(null);
+		
+		add(lIzabraniLekar);
+		add(txtIzabraniLekarJMBG);
 		
 		checkBoxStatus.setSelected (false);
 		add(lUserStatus);add(checkBoxStatus);
@@ -353,19 +370,40 @@ public class Profil extends GuiFunctions {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String stanje = null;
-				if(checkBoxStatus.isSelected()) {
-					stanje="aktivan";
+				if(proveriVrednostiPacijent()) {
+					//Pravim objekat
+					//Saljem ga u funkciju sacuvaj usera
+					//proverava da li postoji user, ako postoji samo menja
+					//ako ne postoji, dodaje novog
+					target.setAdresa(txtUserAdresa.getText());
+					target.setBrojTelefona(txtUserBrojTelefona.getText());
+					target.setIme(txtUserIme.getText());
+					target.setJmbg(txtUserJmbg.getText());
+					target.setPassword(txtUserPassword.getPassword().toString());
+					Boolean pol = false;
+					if(comboPol.getSelectedItem().toString().equalsIgnoreCase("Musko")) {
+						pol = true;
+					}
+					target.setPol(pol);
+					target.setPrezime(txtUserPrezime.getText());
+					target.setUloga(comboTip.getSelectedItem().toString());
+					target.setUsername(txtUserUsername.getText());
+					target.setLekar(jmbgUDoktora(txtIzabraniLekarJMBG.getText()));
+					String stanje;
+					if(checkBoxStatus.isSelected()) {
+						stanje = "aktivan";
+					}
+					else {
+						stanje="ugasen";
+					}
+					target.setStanje(stanje);
+					Boolean izmenjeno = izmeniPacijenta(target);
+				
+				
 				}
 				else {
-					stanje="ugasen";
+					JOptionPane.showMessageDialog( null, "Molimo Vas da unesete podatke u ocekivanom formatu.", "Greška",JOptionPane.ERROR_MESSAGE);
 				}
-				user.setJmbg(txtUserJmbg.getText());
-				user.setAdresa(txtUserAdresa.getText());
-				user.setBrojTelefona(txtUserBrojTelefona.getText());
-				
-				user.sacuvajUsera(user, stanje);
 			}
 		});
 		
@@ -438,6 +476,9 @@ public class Profil extends GuiFunctions {
 			comboPol.addItem("Musko");
 			comboPol.addItem("Zensko");
 			add(comboPol);
+			
+			add(lIzabraniLekar);
+			add(txtIzabraniLekarJMBG);
 			
 			add(lUserStatus);add(checkBoxStatus);
 			
@@ -575,6 +616,65 @@ public class Profil extends GuiFunctions {
 		}
 	}
 	
+	public Boolean proveriVrednostiPacijent() {
+		Boolean nijeProslo = false;
+		int tacno = 0;
+		if(txtUserJmbg.getText().length()==12 && txtIzabraniLekarJMBG.getText().length()==12) {
+			tacno ++;
+		}
+		else {
+			System.out.println("JMBG Nije u tacnom formatu.");
+		}
+		if(txtUserUsername.getText().length()>5) {
+			tacno ++;
+		}
+		else {
+			System.out.println("Username je kraci od 5 karaktera.");
+		}
+		if(txtUserPassword.getPassword().toString().length()>5) {
+			tacno ++;
+		}
+		else {
+			System.out.println("Password je kraci od 5 karaktera.");
+		}
+		if(txtUserIme.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Ime usera.");
+		}
+		if(txtUserPrezime.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Prezime usera.");
+		}
+		if(txtUserAdresa.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Adresu usera.");
+		}
+		if(txtUserBrojTelefona.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli broj telefona usera");
+		}
+		if(comboPol.getSelectedItem()!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste odabrali pol usera.");
+		}
+
+		if(tacno==8) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	
 	
 	
