@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import accounts.Doktor;
 import accounts.MedicinskaSestra;
 import accounts.Pacijent;
+import ostalo.Knjizica;
 import ostalo.Pregled;
 import ostalo.Racun;
 import startPackage.Status;
@@ -22,6 +23,7 @@ public class KontrolnaTacka2 extends GuiFunctions{
 	
 	public KontrolnaTacka2() {
 		Pacijent pacijent1 = pacijenti.get(0);
+		Knjizica knjizica = pacijent1.getKnjizica();
 		Doktor doktor1 = doktori.get(0);
 		MedicinskaSestra sestra1 = sestre.get(0);
 		String IDPregleda = pacijent1.getPregledi().get(0).getID();
@@ -228,6 +230,33 @@ public class KontrolnaTacka2 extends GuiFunctions{
 		
 		return uspeo;
 	}
+////////////////////////////////////////////////////////////
+	public Boolean promeniDatumKnjizice(Knjizica knjizica, Pacijent user, String NoviDatum) {
+		Boolean uspeo = false;
+		try {
+			String staritext = "";
+			String[] textFajla = getText("src/ostalo/knjizice.txt").split("\\;");
+			for(int i=0;i<textFajla.length;i++) {
+				String[] tAcc = textFajla[i].split("\\|");
+				if(user.getUsername().equalsIgnoreCase(tAcc[0])) {
+					staritext += tAcc[0]+"|"+tAcc[1]+"|"+NoviDatum+"|"+tAcc[3]+"\n";
+				}
+				else {
+					staritext += String.join("|", tAcc)+"\n";
+				}
+			}
+			ispisiUFajl("src/ostalo/knjizice.txt", staritext);
+			
+			uspeo = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}{
+			
+		}
+		return uspeo;
+	}
+	
+	
 	public void dodajUFajl(String path,String dodatak) {
 		String prethodno = getTextZaNastaviti(path);
 		try {
