@@ -35,28 +35,31 @@ public class KontrolnaTacka2 extends GuiFunctions{
 		LocalDateTime termin = LocalDateTime.parse(str, formatter);
 		Status statusPregleda = Status.Zakazan;
 		Pregled pregled = new Pregled("1", "Nesto ga boli glava,nmp", "203" , "1233332112", "22041976800052",termin,statusPregleda);
-		//OVO GORE SU OBJEKTI KOJI CE SE KROZ PROJEKAT SAMI LOADOVATI
-		//Sve izmene odraditi tako da se koriste set metode vec datih objekata
-		//Primer
-		//        Pacijent pacijent1Izmenjen = pacijent1;
-		//     pacijent1Izmenjen.setBrojTelefona("23232323");
-		//I tako dalje...
-		Boolean izvrsi = dodajPacijenta1(pacijent1);
+		/**OVO GORE SU OBJEKTI KOJI CE SE KROZ PROJEKAT SAMI LOADOVATI
+		Sve izmene odraditi tako da se koriste set metode vec datih objekata
+		Primer
+		        Pacijent pacijent1Izmenjen = pacijent1;
+		   		pacijent1Izmenjen.setBrojTelefona("23232323");
+		I tako dalje...**/
+		Boolean izvrsi =dodajPacijenta1(pacijent1);
 		System.out.println(izvrsi);
-		//Lista funkcija (da Vam olaksam)
-		//1)dodajPacijenta1(Pacijent user)
-		//2)izmeniPacijenta1(Pacijent user) -> Prethodno ga izmenite sa set metodama
-		//3)obrisiPacijenta1(Pacijent user)
-		//4)dodajSestru1(MedicinskaSestra user)
-		//5)izmeniSestru1(MedicinskaSestra user) -> Prethodno ga izmenite sa set metodama
-		//6)obrisiSestru1(MedicinskaSestra user)
-		//7)dodajDoktora1(Doktor user)
-		//8)izmeniDoktora1(Doktor user) -> Prethodno ga izmenite sa set metodama
-		//9)obrisiDoktora1(Doktor user)
-		//10)zatraziPregled1(Pregled pregled)
-		//11)promeniStanjePregleda(Pregled pregled, Status novoStanje)
-		//12)promeniOpisPregleda(Pregled pregled,String opis)
-		//13)izdajRacun(Racun racun)
+		
+		/**
+		 * Lista funkcija (da Vam olaksam)
+		1)dodajPacijenta1(Pacijent user)
+		2)izmeniPacijenta1(Pacijent user) -> Prethodno ga izmenite sa set metodama
+		3)obrisiPacijenta1(Pacijent user)
+		4)dodajSestru1(MedicinskaSestra user)
+		5)izmeniSestru1(MedicinskaSestra user) -> Prethodno ga izmenite sa set metodama
+		6)obrisiSestru1(MedicinskaSestra user)
+		7)dodajDoktora1(Doktor user)
+		8)izmeniDoktora1(Doktor user) -> Prethodno ga izmenite sa set metodama
+		9)obrisiDoktora1(Doktor user)
+		10)zatraziPregled1(Pregled pregled)
+		11)promeniStanjePregleda(Pregled pregled, Status novoStanje)
+		12)promeniOpisPregleda(Pregled pregled,String opis)
+		13)obrisiPregled(Pregled pregled)
+		14)izdajRacun(Racun racun)**/
 		
 		//Sve metode su tipa Boolean radi ispitivanja njihove funkcionalnosti
 		//
@@ -216,6 +219,22 @@ public class KontrolnaTacka2 extends GuiFunctions{
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		return uspeo;
+	}
+	public Boolean obrisiPregled(Pregled pregled) {
+		Boolean uspeo = false;
+		String staritext = "";
+		String[] textFajla = getText("src/ostalo/pregledi.txt").split("\\;");
+		for(int i=0;i<textFajla.length;i++) {
+			String[] tAcc = textFajla[i].split("\\|");
+			if(pregled.getID().equalsIgnoreCase(tAcc[0])) {
+				uspeo = true;
+			}
+			else {
+				staritext += String.join("|", tAcc)+"\n";
+			}
+		}
+		ispisiUFajl("src/ostalo/pregledi.txt", staritext);
 		return uspeo;
 	}
 ////////////////////////////////////////////////////////////
