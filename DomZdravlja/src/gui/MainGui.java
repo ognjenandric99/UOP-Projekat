@@ -37,6 +37,7 @@ public class MainGui extends GuiFunctions{
 	JMenuItem pogledajKorisnika = new JMenuItem("Pogledaj korisnika");
 	JMenuItem izmeniKorisnika = new JMenuItem("Izmeni korisnika");
 	JMenuItem obrisiKorisnika = new JMenuItem("Obrisi Korisnika");
+	JMenuItem prikaziKorisnike = new JMenuItem("Prikazi korisnike");
 	
 	
 	JMenu meniPregledi = new JMenu("Pregledi");
@@ -44,9 +45,11 @@ public class MainGui extends GuiFunctions{
 	JMenuItem prikaziZatrazene = new JMenuItem("Zatrazeni pregledi");
 	JMenuItem prikaziZakazane = new JMenuItem("Zakazani pregledi");
 	JMenuItem prikaziGotove = new JMenuItem("Gotovi pregledi");
+	JMenuItem mojiPregledi = new JMenuItem("Moji pregledi");
 	
 	JMenu meniRacuni = new JMenu("Racuni");
 	JMenuItem izdajRacun = new JMenuItem("Izdaj racun");
+	JMenuItem mojiRacuni = new JMenuItem("Moji racuni");
 	
 	JMenu profil = new JMenu("Moj Profil");
 	JMenuItem prikaziProfil = new JMenuItem("Prikazi profil");
@@ -91,6 +94,7 @@ public class MainGui extends GuiFunctions{
 		meniKorisnici.add(izmeniKorisnika);
 		meniKorisnici.add(pogledajKorisnika);
 		meniKorisnici.add(obrisiKorisnika);
+		meniKorisnici.add(prikaziKorisnike);
 		
 		meniBar.add(meniPregledi);
 		meniPregledi.add(zakaziPregled);
@@ -157,9 +161,9 @@ public class MainGui extends GuiFunctions{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				Profil profil = new Profil(user.getJmbg(),user);
+				Profil profil = new Profil(user.getJmbg().toString(),user);
 				profil.setVisible(true);
+				
 			}
 		});
 		

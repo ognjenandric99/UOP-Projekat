@@ -31,6 +31,7 @@ public class Pacijent extends Korisnik {
 		this.knjizica = uzmiKnjizicu(jmbg);
 		this.pregledi= ucitajPreglede(this);
 		this.racuni = uzmiRacune(this);
+
 	}
 	public Doktor getLekar() {
 		return lekar;
@@ -60,7 +61,7 @@ public class Pacijent extends Korisnik {
 		for(int i=0;i<linije.length;i++) {
 			String[] tAcc = linije[i].split("\\|");
 			if(tAcc[0].equalsIgnoreCase(jmbg)) {
-				Knjizica knjizica = new Knjizica(this);
+				Knjizica knjizica = new Knjizica(this.getJmbg());
 				zavratiti = knjizica;
 			}
 		}

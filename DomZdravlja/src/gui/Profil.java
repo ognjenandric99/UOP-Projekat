@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -29,9 +31,15 @@ import accounts.MedicinskaSestra;
 import net.miginfocom.swing.MigLayout;
 import startPackage.Sluzba;
 import startPackage.SluzbaSestre;
+import startPackage.TipKnjizice;
 
 
-public class Profil extends GuiFunctions {
+public class Profil extends KontrolnaTacka2 {
+	
+	private ArrayList<Pacijent> pacijenti = ucitajPacijente();
+	private ArrayList<Doktor> doktori = ucitajDoktore();
+	private ArrayList<MedicinskaSestra> sestre = ucitajSestre();
+	
 	
 	private JLabel lUserJmbg = new JLabel("JMBG : ");
 	private JTextField txtUserJmbg = new JTextField(20);
@@ -79,6 +87,12 @@ public class Profil extends GuiFunctions {
 	private JLabel lIzabraniLekar = new JLabel("JMBG izabranog lekara : ");
 	private JTextField txtIzabraniLekarJMBG = new JTextField(20);
 	
+	private JLabel lPacijentKnjizica = new JLabel("Kategorija Knjizice");
+	private JComboBox<TipKnjizice> comboTipKnjizice = new JComboBox<TipKnjizice>();
+	
+	private JLabel lPacijentKnjizicaIstek = new JLabel("Istek knjizice (U FORMATU : YYYY-MM-DD)");
+	private JTextField txtIstekKnjizice = new JTextField(20);
+	
 	public Profil(MedicinskaSestra user) {
 		prozor(user);
 	}
@@ -112,15 +126,15 @@ public class Profil extends GuiFunctions {
 		Doktor target3 = jmbgUDoktora(jmbgtarget);
 		if(target1!=null) {
 			initGUI(target1,user);
-			eventsSestra(target1,user);
+			eventsSestra(target1.getUloga(),user);
 		}
 		else if (target2!=null) {
 			initGUI(target2,user);
-			eventsSestra(target2,user);
+			eventsSestra(target2.getUloga(),user);
 		}
 		else if(target3!=null) {
 			initGUI(target3,user);
-			eventsSestra(target3,user);
+			eventsSestra(target3.getUloga(),user);
 		}
 		else if(target1==null && target2==null && target3==null) {
 			initGUI(user);
@@ -171,7 +185,7 @@ public class Profil extends GuiFunctions {
 			comboTip.addItem("MedicinskaSestra");
 			comboTip.addItem("Doktor");
 			add(comboTip);
-			izmenaProzoraZbogTipa();
+			izmenaProzoraZbogTipa(user);
 			comboTip.setSelectedItem(String.valueOf(target.getUloga()));
 			
 			add(lUserPol);
@@ -188,6 +202,12 @@ public class Profil extends GuiFunctions {
 			add(lIzabraniLekar);
 			txtIzabraniLekarJMBG.setText(target.getLekar().getJmbg());
 			add(txtIzabraniLekarJMBG);
+			
+			add(lPacijentKnjizica);add(comboTipKnjizice);
+			comboTipKnjizice.addItem(TipKnjizice.prvi);
+			comboTipKnjizice.addItem(TipKnjizice.drugi);
+			comboTipKnjizice.addItem(TipKnjizice.treci);
+			add(lPacijentKnjizicaIstek);add(txtIstekKnjizice);
 			
 			checkBoxStatus.setSelected (uzmiStanje(target.getUsername()));
 			add(lUserStatus);add(checkBoxStatus);
@@ -240,7 +260,7 @@ public class Profil extends GuiFunctions {
 		comboTip.addItem("Doktor");
 		add(comboTip);
 		comboTip.setSelectedItem(String.valueOf(target.getUloga()));
-		izmenaProzoraZbogTipa();
+		izmenaProzoraZbogTipa(user);
 		
 		add(lUserPol);
 		comboPol.addItem("Musko");
@@ -303,7 +323,7 @@ public class Profil extends GuiFunctions {
 		comboTip.addItem("MedicinskaSestra");
 		comboTip.addItem("Doktor");
 		add(comboTip);
-		izmenaProzoraZbogTipa();
+		izmenaProzoraZbogTipa(user);
 		comboTip.setSelectedItem(String.valueOf(target.getUloga()));
 		
 		add(lUserPol);
@@ -345,8 +365,9 @@ public class Profil extends GuiFunctions {
 		comboTip.addItem("Pacijent");
 		comboTip.addItem("MedicinskaSestra");
 		comboTip.addItem("Doktor");
+		comboTip.setSelectedItem(null);
 		add(comboTip);
-		izmenaProzoraZbogTipa();
+		izmenaProzoraZbogTipa(user);
 		
 		
 		add(lUserPol);
@@ -364,49 +385,95 @@ public class Profil extends GuiFunctions {
 		add(btnSacuvaj);add(btnCancel);
 	}
 	
-	public void eventsSestra(Pacijent target,MedicinskaSestra user) {
+	public void eventsSestra(String tipusera,MedicinskaSestra user) {
 		
-		btnSacuvaj.addActionListener(new ActionListener() {
+		if(tipusera.equalsIgnoreCase("Pacijent")) {
+			ocistiDugme(btnSacuvaj);
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(proveriVrednostiPacijent()) {
-					//Pravim objekat
-					//Saljem ga u funkciju sacuvaj usera
-					//proverava da li postoji user, ako postoji samo menja
-					//ako ne postoji, dodaje novog
-					target.setAdresa(txtUserAdresa.getText());
-					target.setBrojTelefona(txtUserBrojTelefona.getText());
-					target.setIme(txtUserIme.getText());
-					target.setJmbg(txtUserJmbg.getText());
-					target.setPassword(txtUserPassword.getPassword().toString());
-					Boolean pol = false;
-					if(comboPol.getSelectedItem().toString().equalsIgnoreCase("Musko")) {
-						pol = true;
-					}
-					target.setPol(pol);
-					target.setPrezime(txtUserPrezime.getText());
-					target.setUloga(comboTip.getSelectedItem().toString());
-					target.setUsername(txtUserUsername.getText());
-					target.setLekar(jmbgUDoktora(txtIzabraniLekarJMBG.getText()));
-					String stanje;
-					if(checkBoxStatus.isSelected()) {
-						stanje = "aktivan";
-					}
-					else {
-						stanje="ugasen";
-					}
-					target.setStanje(stanje);
-					Boolean izmenjeno = izmeniPacijenta(target);
+			btnSacuvaj.addActionListener(new ActionListener() {
 				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					if(proveriVrednostiPacijent()) {
+						//ODRADITI DA SE PROVERI DA LI TAJ KORISNIK VEC POSTOJI
+						//AKO POSTOJI DA SE DODA U ODREDJENU LISTU, A DA SE IZBACI IZ STARE
+						//I IDEMO SACUVANJE LSITA
+						
+						//U SLUCAJU DA NIJE NI U JEDNOJ LISTI, IDEMO SAMO GA DODAMO U LISTU I SACUVAMO FAJL
+						Boolean postoji = false;
+						for (Pacijent pacijent : pacijenti) {
+							if(pacijent.getJmbg().equalsIgnoreCase(txtUserJmbg.getText())) {
+								postoji = true;
+							}
+						}
+						for (Doktor doktor : doktori) {
+							if(doktor.getJmbg().equalsIgnoreCase(txtUserJmbg.getText())) {
+								postoji = true;
+							}
+						}
+						for (MedicinskaSestra ses : sestre) {
+							if(ses.getJmbg().equalsIgnoreCase(txtUserJmbg.getText())) {
+								postoji = true;
+							}
+						}
+						if(postoji==false) {
+							String pol="";
+							if(comboPol.getSelectedItem().toString().equalsIgnoreCase("Musko")) {
+								pol="true";
+							}
+							else {
+								pol="false";
+							}
+							
+							String statusAccounta = "";
+							if(checkBoxStatus.isSelected()==true) {
+								statusAccounta="aktivan";
+							}
+							else {
+								statusAccounta="ugasen";
+							}
+							
+							String dodatak = txtUserUsername.getText()+"|"+String.valueOf(txtUserPassword.getPassword())+"|"+txtUserJmbg.getText()+"|"+comboTip.getSelectedItem().toString()+"|"+txtUserIme.getText()+"|"+txtUserPrezime.getText()+"|"+txtUserAdresa.getText()+"|"+txtUserBrojTelefona.getText()+"|"+pol+"|"+statusAccounta+"\n";
+							dodajUFajl("src/accounts/accounts.txt", dodatak);
+							String dodatak1 = txtUserJmbg.getText()+"|"+comboTipKnjizice.getSelectedItem().toString()+"|"+txtIstekKnjizice.getText()+"|"+"true\n";
+							dodajUFajl("src/ostalo/knjizice.txt", dodatak1);
+							String dodatak2 = txtUserJmbg.getText()+"|"+txtIzabraniLekarJMBG.getText()+"\n";
+							dodajUFajl("src/accounts/pacijenti.txt", dodatak2);
+						}
+						//String ispis = txtUserJmbg+"|"+comboTipKnjizice.getSelectedItem().toString()+"|"+txtIstekKnjizice.getText()+"|true";
+						//System.out.println(ispis);
+						//ispisiUFajl("src/ostalo/knjizice.txt", ispis);
+						
+					}
+				}
+			});
+		}
+		else if (tipusera.equalsIgnoreCase("MedicinskaSestra")) {
+			ocistiDugme(btnSacuvaj);
+			
+			btnSacuvaj.addActionListener(new ActionListener() {
 				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
 				}
-				else {
-					JOptionPane.showMessageDialog( null, "Molimo Vas da unesete podatke u ocekivanom formatu.", "Greška",JOptionPane.ERROR_MESSAGE);
+			});
+		}
+		else if(tipusera.equalsIgnoreCase("Doktor")) {
+			
+			ocistiDugme(btnSacuvaj);
+			btnSacuvaj.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("dok");
 				}
-			}
-		});
-		
+			});
+		}
+		else {
+			System.out.println("Doslo je do greske u eventsSestra prilikom ucitavanja tipa usera");
+		}
 		
 		btnCancel.addActionListener(new ActionListener() {
 			
@@ -420,30 +487,31 @@ public class Profil extends GuiFunctions {
 		
 		
 	}
-	public void eventsSestra(MedicinskaSestra target,MedicinskaSestra user) {
-		
-		
-	}
-	public void eventsSestra(Doktor target,MedicinskaSestra user) {
-		
-	}
 	public void eventsSestra(MedicinskaSestra user) {
-		
+		btnCancel.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						Profil.this.setVisible(false);
+						Profil.this.dispose();
+					}
+				});
 	}
 	
 	
-	public void izmenaProzoraZbogTipa() {
+	public void izmenaProzoraZbogTipa(MedicinskaSestra user) {
 		comboTip.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				menjanjeTipa((String)comboTip.getSelectedItem());
+				menjanjeTipa((String)comboTip.getSelectedItem(),user);
 			}
 		});
 	}
 	
-	public void menjanjeTipa(String sadasnji) {
+	public void menjanjeTipa(String sadasnji, MedicinskaSestra user) {
 		if(sadasnji.equalsIgnoreCase("Pacijent")) {
 			getContentPane().removeAll();
 			revalidate();
@@ -475,17 +543,26 @@ public class Profil extends GuiFunctions {
 			comboPol.removeAllItems();
 			comboPol.addItem("Musko");
 			comboPol.addItem("Zensko");
+			comboPol.setSelectedItem(null);
 			add(comboPol);
 			
 			add(lIzabraniLekar);
 			add(txtIzabraniLekarJMBG);
+
+			add(lPacijentKnjizica);add(comboTipKnjizice);
+			comboTipKnjizice.addItem(TipKnjizice.prvi);
+			comboTipKnjizice.addItem(TipKnjizice.drugi);
+			comboTipKnjizice.addItem(TipKnjizice.treci);
+			comboTipKnjizice.setSelectedItem(null);
+			add(lPacijentKnjizicaIstek);add(txtIstekKnjizice);
 			
 			add(lUserStatus);add(checkBoxStatus);
 			
 			add(btnSacuvaj);add(btnCancel);
+			
 			revalidate();
 			repaint();
-			
+			eventsSestra(sadasnji, user);
 		}
 		else if(sadasnji.equalsIgnoreCase("Doktor")) {
 			getContentPane().removeAll();
@@ -505,6 +582,7 @@ public class Profil extends GuiFunctions {
 			comboSluzba.addItem(Sluzba.SluzbaZdravstveneZastiteDece);
 			comboSluzba.addItem(Sluzba.SluzbaZdravstveneZastiteRadnika);
 			comboSluzba.addItem(Sluzba.StomatoloskaSluzba);
+			comboSluzba.setSelectedItem(null);
 			add(comboSluzba);
 			
 			
@@ -540,6 +618,7 @@ public class Profil extends GuiFunctions {
 			comboPol.removeAllItems();
 			comboPol.addItem("Musko");
 			comboPol.addItem("Zensko");
+			comboPol.setSelectedItem(null);
 			add(comboPol);
 			
 
@@ -548,6 +627,7 @@ public class Profil extends GuiFunctions {
 			add(btnSacuvaj);add(btnCancel);
 			revalidate();
 			repaint();
+			eventsSestra(sadasnji, user);
 		}
 		else if(sadasnji.equalsIgnoreCase("MedicinskaSestra")) {
 			getContentPane().removeAll();
@@ -569,6 +649,7 @@ public class Profil extends GuiFunctions {
 			comboSluzbaS.addItem(SluzbaSestre.SluzbaZdravstveneZastiteDece);
 			comboSluzbaS.addItem(SluzbaSestre.SluzbaZdravstveneZastiteRadnika);
 			comboSluzbaS.addItem(SluzbaSestre.StomatoloskaSluzba);
+			comboSluzbaS.setSelectedItem(null);
 			add(comboSluzbaS);
 			
 			
@@ -601,6 +682,7 @@ public class Profil extends GuiFunctions {
 			comboPol.removeAllItems();
 			comboPol.addItem("Musko");
 			comboPol.addItem("Zensko");
+			comboPol.setSelectedItem(null);
 			add(comboPol);
 			
 			
@@ -610,6 +692,7 @@ public class Profil extends GuiFunctions {
 			add(btnSacuvaj);add(btnCancel);
 			revalidate();
 			repaint();
+			eventsSestra(sadasnji, user);
 		}
 		else {
 			System.out.println("Doslo je do greske prilikom menjanja tipa u prozoru Profil");
@@ -619,7 +702,7 @@ public class Profil extends GuiFunctions {
 	public Boolean proveriVrednostiPacijent() {
 		Boolean nijeProslo = false;
 		int tacno = 0;
-		if(txtUserJmbg.getText().length()==12 && txtIzabraniLekarJMBG.getText().length()==12) {
+		if(txtUserJmbg.getText().length()==13) {
 			tacno ++;
 		}
 		else {
@@ -667,8 +750,39 @@ public class Profil extends GuiFunctions {
 		else {
 			System.out.println("Niste odabrali pol usera.");
 		}
+		if(txtIzabraniLekarJMBG.getText().length()==13) {
+			tacno++;
+		}
+		else {
+			System.out.println(txtIzabraniLekarJMBG.getText().length());
+			System.out.println("JMBG Lekara nije u tacnom formatu.");
+		}
+		if(comboTipKnjizice.getSelectedItem()!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste odabrali knjizicu.");
+		}
+		String[] vremeIsteka = txtIstekKnjizice.getText().split("\\-");
+		Boolean mozeVreme;
+		try {
+			GregorianCalendar cal = new GregorianCalendar(Integer.valueOf(vremeIsteka[0]),Integer.valueOf(vremeIsteka[1]),Integer.valueOf(vremeIsteka[2]));
+			mozeVreme = true;
+			if(Integer.valueOf(vremeIsteka[0])<1900 || Integer.valueOf(vremeIsteka[0])>3000 || Integer.valueOf(vremeIsteka[1])>12 ||  Integer.valueOf(vremeIsteka[1])<1 ||  Integer.valueOf(vremeIsteka[1])>12 ||  Integer.valueOf(vremeIsteka[2])>31 ||  Integer.valueOf(vremeIsteka[2])<1){
+				mozeVreme = false;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			mozeVreme = false;
+		}
+		if(vremeIsteka.length==3 && mozeVreme) {
+			tacno++;
+		}
+		else {
+			System.out.println("Vreme nije u tacnom formatu.");
+		}
 
-		if(tacno==8) {
+		if(tacno==11) {
 			return true;
 		}
 		else {
@@ -676,6 +790,10 @@ public class Profil extends GuiFunctions {
 		}
 	}
 	
-	
+	public void ocistiDugme(JButton dugme) {
+		for (ActionListener dugmeAkcija : dugme.getActionListeners()) {
+			dugme.removeActionListener(dugmeAkcija);
+		}
+	}
 	
 }

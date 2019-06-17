@@ -24,7 +24,9 @@ public class GuiFunctions extends JFrame {
 			String[] xacc = accoutnsredovi[i].split("\\|");
 			if(xacc[3].equalsIgnoreCase("pacijent")) {
 				Pacijent pac = new Pacijent(xacc[4],xacc[5],xacc[2],xacc[6],xacc[7],xacc[0],xacc[1],xacc[3],Boolean.valueOf(xacc[8]));
-				pacijenti1.add(pac);
+				if(!pacijenti1.contains(pac)) {
+					pacijenti1.add(pac);
+				}
 				
 			}
 			

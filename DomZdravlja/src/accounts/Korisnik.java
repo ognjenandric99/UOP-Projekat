@@ -230,7 +230,7 @@ public abstract class Korisnik  {
 		for(int i=0;i<linije1.length;i++) {
 			String[] tL = linije1[i].split("\\|");
 			if(tL[0].equalsIgnoreCase(user.getJmbg())) {
-				Knjizica knjizica = new Knjizica(user);
+				Knjizica knjizica = new Knjizica(user.getJmbg());
 				knjizice.add(knjizica);
 			}
 		}
