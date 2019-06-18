@@ -3,6 +3,8 @@ package gui;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -10,6 +12,9 @@ import javax.swing.JFrame;
 import accounts.Doktor;
 import accounts.MedicinskaSestra;
 import accounts.Pacijent;
+import ostalo.Knjizica;
+import ostalo.Pregled;
+import startPackage.Status;
 
 public class GuiFunctions extends JFrame {
 	private ArrayList<Pacijent> pacijenti = ucitajPacijente();
@@ -63,6 +68,57 @@ public class GuiFunctions extends JFrame {
 		}
 		return doktori1;
 	}
+	public ArrayList<Knjizica> ucitajKnjizice(Pacijent user){
+		ArrayList<Knjizica> knjizice = new ArrayList<Knjizica>();
+		String linije = getText("src/ostalo/knjizice.txt");
+		String[] linije1 = linije.split("\\;");
+		for(int i=0;i<linije1.length;i++) {
+			String[] tL = linije1[i].split("\\|");
+			if(tL[0].equalsIgnoreCase(user.getJmbg())) {
+				Knjizica knjizica = new Knjizica(user.getJmbg());
+				knjizice.add(knjizica);
+			}
+		}
+		return knjizice;
+	}
+
+	
+	public ArrayList<Pregled> ucitajPreglede(Pacijent user){
+		ArrayList<Pregled> pregledi = new ArrayList<Pregled>();
+		String linije = getText("src/ostalo/pregledi.txt");
+		String[] linije1 = linije.split("\\;");
+		for(int i=0;i<linije1.length;i++) {
+			String[] tPr = linije1[i].split("\\|");
+			if(tPr[1].equalsIgnoreCase(user.getJmbg())) {
+				String now = tPr[5];
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		        LocalDateTime formatDateTime = LocalDateTime.parse(now, formatter);
+				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
+				pregledi.add(pregled);			}
+		}
+		return pregledi;
+	}
+	public ArrayList<Pregled> ucitajPreglede(Doktor user){
+		ArrayList<Pregled> pregledi = new ArrayList<Pregled>();
+		String linije = getText("src/ostalo/pregledi.txt");
+		String[] linije1 = linije.split("\\;");
+		for(int i=0;i<linije1.length;i++) {
+			String[] tPr = linije1[i].split("\\|");
+			if(tPr[2].equalsIgnoreCase(user.getJmbg()) && !tPr[6].equalsIgnoreCase("Zatrazen")) {
+				String now = tPr[5];
+
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+		        LocalDateTime formatDateTime = LocalDateTime.parse(now, formatter);
+		        
+				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
+				pregledi.add(pregled);
+				}
+		}
+		return pregledi;
+	}
+
+
 	public static String getText(String path) {
 		String getTextText = "";
 		try {
@@ -118,6 +174,9 @@ public class GuiFunctions extends JFrame {
 	}
 	
 	public Doktor jmbgUDoktora(String jmbg) {
+		if(jmbg.equalsIgnoreCase("X")) {
+			return null;
+		}
 		ArrayList<Doktor> doktori = ucitajDoktore();
 		for (Doktor doktor : doktori) {
 			if(doktor.getJmbg().equalsIgnoreCase(jmbg)) {
@@ -147,4 +206,5 @@ public class GuiFunctions extends JFrame {
 		
 	}
 
+	
 }

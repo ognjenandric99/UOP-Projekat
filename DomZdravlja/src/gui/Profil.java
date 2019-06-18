@@ -98,7 +98,7 @@ public class Profil extends KontrolnaTacka2 {
 	}
 	public Profil(String jmbgtarget,MedicinskaSestra user) {
 		prozor(jmbgtarget,user);
-		
+		ocistifajlove();
 	}
 	public void prozor(MedicinskaSestra user) {
 		setTitle("Dom Zdravlja");
@@ -396,54 +396,27 @@ public class Profil extends KontrolnaTacka2 {
 				public void actionPerformed(ActionEvent e) {
 					
 					if(proveriVrednostiPacijent()) {
-						//ODRADITI DA SE PROVERI DA LI TAJ KORISNIK VEC POSTOJI
-						//AKO POSTOJI DA SE DODA U ODREDJENU LISTU, A DA SE IZBACI IZ STARE
-						//I IDEMO SACUVANJE LSITA
-						
-						//U SLUCAJU DA NIJE NI U JEDNOJ LISTI, IDEMO SAMO GA DODAMO U LISTU I SACUVAMO FAJL
-						Boolean postoji = false;
-						for (Pacijent pacijent : pacijenti) {
-							if(pacijent.getJmbg().equalsIgnoreCase(txtUserJmbg.getText())) {
-								postoji = true;
-							}
+						String pol = "";
+						String status = "";
+						if(comboPol.getSelectedItem().toString().equalsIgnoreCase("Musko")) {
+							pol="true";
 						}
-						for (Doktor doktor : doktori) {
-							if(doktor.getJmbg().equalsIgnoreCase(txtUserJmbg.getText())) {
-								postoji = true;
-							}
+						else {
+							pol="false";
 						}
-						for (MedicinskaSestra ses : sestre) {
-							if(ses.getJmbg().equalsIgnoreCase(txtUserJmbg.getText())) {
-								postoji = true;
-							}
+						if(checkBoxStatus.isSelected()) {
+							status="aktivan";
 						}
-						if(postoji==false) {
-							String pol="";
-							if(comboPol.getSelectedItem().toString().equalsIgnoreCase("Musko")) {
-								pol="true";
+						else {
+							status="ugasen";
 							}
-							else {
-								pol="false";
-							}
-							
-							String statusAccounta = "";
-							if(checkBoxStatus.isSelected()==true) {
-								statusAccounta="aktivan";
-							}
-							else {
-								statusAccounta="ugasen";
-							}
-							
-							String dodatak = txtUserUsername.getText()+"|"+String.valueOf(txtUserPassword.getPassword())+"|"+txtUserJmbg.getText()+"|"+comboTip.getSelectedItem().toString()+"|"+txtUserIme.getText()+"|"+txtUserPrezime.getText()+"|"+txtUserAdresa.getText()+"|"+txtUserBrojTelefona.getText()+"|"+pol+"|"+statusAccounta+"\n";
-							dodajUFajl("src/accounts/accounts.txt", dodatak);
-							String dodatak1 = txtUserJmbg.getText()+"|"+comboTipKnjizice.getSelectedItem().toString()+"|"+txtIstekKnjizice.getText()+"|"+"true\n";
-							dodajUFajl("src/ostalo/knjizice.txt", dodatak1);
-							String dodatak2 = txtUserJmbg.getText()+"|"+txtIzabraniLekarJMBG.getText()+"\n";
-							dodajUFajl("src/accounts/pacijenti.txt", dodatak2);
-						}
-						//String ispis = txtUserJmbg+"|"+comboTipKnjizice.getSelectedItem().toString()+"|"+txtIstekKnjizice.getText()+"|true";
-						//System.out.println(ispis);
-						//ispisiUFajl("src/ostalo/knjizice.txt", ispis);
+						String dodatak = txtUserUsername.getText()+"|"+String.valueOf(txtUserPassword.getPassword())+"|"+txtUserJmbg.getText()+"|Pacijent|"+txtUserIme.getText()+"|"+txtUserPrezime.getText()+"|"+txtUserAdresa.getText()+"|"+txtUserBrojTelefona.getText()+"|"+pol+"|"+status+"\n";
+						dodajUFajl("src/accounts/accounts.txt", dodatak);
+						String dodatak1 = txtUserJmbg.getText()+"|"+txtIzabraniLekarJMBG.getText()+"\n";
+						dodajUFajl("src/accounts/pacijenti.txt", dodatak1);
+						String dodatak2 = txtUserJmbg.getText()+"|"+String.valueOf(comboTipKnjizice.getSelectedItem())+"|"+txtIstekKnjizice.getText()+"|"+"true";
+						dodajUFajl("src/ostalo/knjizice.txt", dodatak2);
+						ocistifajlove();
 						
 					}
 				}
@@ -456,7 +429,27 @@ public class Profil extends KontrolnaTacka2 {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
+					if(proveriVrednostiSestra()) {
+						String pol = "";
+						String status = "";
+						if(comboPol.getSelectedItem().toString().equalsIgnoreCase("Musko")) {
+							pol="true";
+						}
+						else {
+							pol="false";
+						}
+						if(checkBoxStatus.isSelected()) {
+							status="aktivan";
+						}
+						else {
+							status="ugasen";
+							}
+						String dodatak = txtUserUsername.getText()+"|"+String.valueOf(txtUserPassword.getPassword())+"|"+txtUserJmbg.getText()+"|MedicinskaSestra|"+txtUserIme.getText()+"|"+txtUserPrezime.getText()+"|"+txtUserAdresa.getText()+"|"+txtUserBrojTelefona.getText()+"|"+pol+"|"+status+"\n";
+						dodajUFajl("src/accounts/accounts.txt", dodatak);
+						String dodatak1 = txtUserJmbg.getText()+"|"+String.valueOf(comboSluzbaS.getSelectedItem())+"|"+txtUserPlata.getText()+"\n";
+						dodajUFajl("src/accounts/sestre.txt", dodatak1);
+						ocistifajlove();
+					}
 				}
 			});
 		}
@@ -467,10 +460,32 @@ public class Profil extends KontrolnaTacka2 {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("dok");
+					if(proveriVrednostiDoktor()) {
+						String pol = "";
+						String status = "";
+						if(comboPol.getSelectedItem().toString().equalsIgnoreCase("Musko")) {
+							pol="true";
+						}
+						else {
+							pol="false";
+						}
+						if(checkBoxStatus.isSelected()) {
+							status="aktivan";
+						}
+						else {
+							status="ugasen";
+							}
+						String dodatak = txtUserUsername.getText()+"|"+String.valueOf(txtUserPassword.getPassword())+"|"+txtUserJmbg.getText()+"|Doktor|"+txtUserIme.getText()+"|"+txtUserPrezime.getText()+"|"+txtUserAdresa.getText()+"|"+txtUserBrojTelefona.getText()+"|"+pol+"|"+status+"\n";
+						dodajUFajl("src/accounts/accounts.txt", dodatak);
+						String dodatak1 = txtUserJmbg.getText()+"|"+String.valueOf(comboSluzba.getSelectedItem())+"|"+txtUserSpecijalizacija.getText()+"|"+txtUserPlata.getText()+"\n";
+						dodajUFajl("src/accounts/doktori.txt", dodatak1);
+						ocistifajlove();
+					}
 				}
 			});
+			
 		}
+		
 		else {
 			System.out.println("Doslo je do greske u eventsSestra prilikom ucitavanja tipa usera");
 		}
@@ -488,6 +503,7 @@ public class Profil extends KontrolnaTacka2 {
 		
 	}
 	public void eventsSestra(MedicinskaSestra user) {
+		
 		btnCancel.addActionListener(new ActionListener() {
 					
 					@Override
@@ -782,6 +798,158 @@ public class Profil extends KontrolnaTacka2 {
 			System.out.println("Vreme nije u tacnom formatu.");
 		}
 
+		if(tacno==11) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public Boolean proveriVrednostiSestra() {
+		int tacno = 0;
+		if(txtUserJmbg.getText().length()==13) {
+			tacno ++;
+		}
+		else {
+			System.out.println("JMBG Nije u tacnom formatu.");
+		}
+		if(txtUserUsername.getText().length()>5) {
+			tacno ++;
+		}
+		else {
+			System.out.println("Username je kraci od 5 karaktera.");
+		}
+		if(txtUserPassword.getPassword().toString().length()>5) {
+			tacno ++;
+		}
+		else {
+			System.out.println("Password je kraci od 5 karaktera.");
+		}
+		if(txtUserIme.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Ime usera.");
+		}
+		if(txtUserPrezime.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Prezime usera.");
+		}
+		if(txtUserAdresa.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Adresu usera.");
+		}
+		if(txtUserBrojTelefona.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli broj telefona usera");
+		}
+		if(comboPol.getSelectedItem()!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste odabrali pol usera.");
+		}
+		if(comboSluzbaS.getSelectedItem()!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste odabrali sluzbu.");
+		}
+		try {
+			int op = Integer.valueOf(txtUserPlata.getText());
+			if(op>0) {
+				tacno++;
+			}
+		} catch (Exception e) {
+			System.out.println("Plata ne sme da sadrzi nista drugo osim brojeva.Proverite da li ste je uneli kako treba.");
+		}
+		if(tacno==10) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+
+	
+	public Boolean proveriVrednostiDoktor() {
+		int tacno = 0;
+		if(txtUserJmbg.getText().length()==13) {
+			tacno ++;
+		}
+		else {
+			System.out.println("JMBG Nije u tacnom formatu.");
+		}
+		if(txtUserUsername.getText().length()>5) {
+			tacno ++;
+		}
+		else {
+			System.out.println("Username je kraci od 5 karaktera.");
+		}
+		if(txtUserPassword.getPassword().toString().length()>5) {
+			tacno ++;
+		}
+		else {
+			System.out.println("Password je kraci od 5 karaktera.");
+		}
+		if(txtUserIme.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Ime usera.");
+		}
+		if(txtUserPrezime.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Prezime usera.");
+		}
+		if(txtUserAdresa.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli Adresu usera.");
+		}
+		if(txtUserBrojTelefona.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli broj telefona usera");
+		}
+		if(comboPol.getSelectedItem()!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste odabrali pol usera.");
+		}
+		if(comboSluzba.getSelectedItem()!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste odabrali sluzbu doktora.");
+		}
+		if(txtUserSpecijalizacija.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli specijalizaciju doktora.");
+		}
+		try {
+			int pla = Integer.valueOf(txtUserPlata.getText());
+			if(pla>0) {
+				tacno++;
+			}
+		} catch (Exception e) {
+			System.out.println("Niste uneli platu.");
+		}
 		if(tacno==11) {
 			return true;
 		}

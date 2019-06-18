@@ -55,7 +55,7 @@ public class MainGui extends GuiFunctions{
 	JMenuItem prikaziProfil = new JMenuItem("Prikazi profil");
 	JMenuItem logOut = new JMenuItem("Log out");
 	
-	
+	JLabel lab = new JLabel("xD");
 	
 	/*KRAJ OPCIJA ZA MEDICINSKU SESTRU*/
 	
@@ -172,8 +172,17 @@ public class MainGui extends GuiFunctions{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Profil profil = new Profil(null,user);
+				Profil profil = new Profil(user);
 				profil.setVisible(true);
+			}
+		});
+		
+		pogledajKorisnika.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 		

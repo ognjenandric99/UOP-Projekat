@@ -384,5 +384,58 @@ public class KontrolnaTacka2 extends GuiFunctions{
 	//Gotova kontrolna tacka 2
 	//Za "Izmeni" funkcije, prvo konstruisati nov objekat koji treba da zameni stari
 	//OBAVEZNO OSTAVITI isti kljuc da bi radilo, u suprotnosti funkcija nece nista izvrsiti
-	
+	public void ocistifajlove() {
+		ArrayList<Pacijent> ciscenjePacijenti = ucitajPacijente();
+		ArrayList<MedicinskaSestra> ciscenjeMedicinskaSestra = ucitajSestre();
+		ArrayList<Doktor> ciscenjeDoktori=ucitajDoktore();
+		
+		ArrayList<Pacijent> ociscenPacijent = new ArrayList<Pacijent>();
+		ArrayList<MedicinskaSestra> ociscenaSestra = new ArrayList<MedicinskaSestra>();
+		ArrayList<Doktor> ociscenDoktor = new ArrayList<Doktor>();
+		
+		for (int i = ciscenjePacijenti.size()-1; i>=0 ; i--) {
+			int brojac = 0;
+			for (Pacijent pacijent : ociscenPacijent) {
+				
+				if(pacijent.getJmbg().equalsIgnoreCase(ciscenjePacijenti.get(i).getJmbg())) {
+					brojac++;
+				}
+				
+			}
+			if(brojac==0) {
+				ociscenPacijent.add(ciscenjePacijenti.get(i));
+			}
+			
+		}
+		for (int i = ciscenjeMedicinskaSestra.size()-1; i>=0 ; i--) {
+			int brojac = 0;
+			for (MedicinskaSestra sestra : ociscenaSestra) {
+				
+				if(sestra.getJmbg().equalsIgnoreCase(ciscenjeMedicinskaSestra.get(i).getJmbg())) {
+					brojac++;
+				}
+				
+			}
+			if(brojac==0) {
+				ociscenaSestra.add(ciscenjeMedicinskaSestra.get(i));
+			}
+			
+			
+		}
+		for (int i = ciscenjeDoktori.size()-1; i>=0 ; i--) {
+			int brojac = 0;
+			for (Doktor doktor : ociscenDoktor) {
+				
+				if(doktor.getJmbg().equalsIgnoreCase(ciscenjeDoktori.get(i).getJmbg())) {
+					brojac++;
+				}
+				
+			}
+			if(brojac==0) {
+				ociscenDoktor.add(ciscenjeDoktori.get(i));
+			}
+			
+		}
+		sacuvajListe(ociscenPacijent, ociscenDoktor, ociscenaSestra);
+	}
 }
