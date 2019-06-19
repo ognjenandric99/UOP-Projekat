@@ -1,5 +1,5 @@
 Pacijent|Pacijent1|5279854611132|Pacijent|Korisnik|Proba|ADresica|23232323|true|aktivan
-noviKorisnik|noviiiiiiii|5811108353822|Pacijent|Ognjen|Andric|Malina 13||true|aktivan
+noviKorisnik|noviiiiiiii|5811108353822|Pacijent|Ognjen|Andric|Malina 13|3123123|true|aktivan
 prvidaradi|prvidaradi1|9148311008314|Pacijent|PrvoIme|DrugoImehehe|NekAdresicaMala|12333321|true|aktivan
 MSestra|MSestra1|2747255134988|MedicinskaSestra|Korisni2k|Proba|ADresica|555333|true|aktivan
 Doktor|Doktor1|2385610688763|Doktor|Korisnik|Proba|ADresica|555333|true|aktivan

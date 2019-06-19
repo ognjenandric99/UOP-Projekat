@@ -281,6 +281,13 @@ public class MainGui extends GuiFunctions{
 		});
 	}
 	public void eventsPacijent(Pacijent user) {
-		
+		mojiPregledi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }

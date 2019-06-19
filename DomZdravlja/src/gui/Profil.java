@@ -139,6 +139,7 @@ public class Profil extends KontrolnaTacka2 {
 		else if(target1==null && target2==null && target3==null) {
 			initGUI(user);
 			eventsSestra(user);
+			System.out.println("Ne postoji korisnik sa tim JMBG-om. Otvorili smo prozor za dodavanje novog korisnika umesto toga.");
 		}
 		else {
 			System.out.println("Doslo je do greskse prilikom provere da li su objekti prazni kod prozora.");
