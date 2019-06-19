@@ -25,6 +25,7 @@ import accounts.Doktor;
 import accounts.MedicinskaSestra;
 
 import net.miginfocom.swing.MigLayout;
+import ostalo.Pregled;
 
 
 public class MainGui extends GuiFunctions{
@@ -47,6 +48,7 @@ public class MainGui extends GuiFunctions{
 	JMenuItem prikaziGotove = new JMenuItem("Gotovi pregledi");
 	JMenuItem mojiPregledi = new JMenuItem("Moji pregledi");
 	JMenuItem izmeniPregled = new JMenuItem("Izmeni pregled");
+	JMenuItem prikaziSvePreglede = new JMenuItem("Prikazi sve preglede");
 	
 	JMenu meniRacuni = new JMenu("Racuni");
 	JMenuItem izdajRacun = new JMenuItem("Izdaj racun");
@@ -116,9 +118,7 @@ public class MainGui extends GuiFunctions{
 		
 		meniBar.add(meniPregledi);
 		meniPregledi.add(zakaziPregled);
-		meniPregledi.add(prikaziZatrazene);
-		meniPregledi.add(prikaziZakazane);
-		meniPregledi.add(prikaziGotove);
+		meniPregledi.add(prikaziSvePreglede);
 		
 		meniBar.add(meniRacuni);
 		meniRacuni.add(izdajRacun);
@@ -266,6 +266,34 @@ public class MainGui extends GuiFunctions{
 			}
 		});
 		
+		prikaziZatrazene.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		prikaziSvePreglede.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TabelaPregled tabela = new TabelaPregled(user);
+				tabela.setVisible(true);
+			}
+		});
+		
+		izdajRacun.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				IzdajRacun racun = new IzdajRacun(user);
+				racun.setVisible(true);
+			}
+		});
 		logOut.addActionListener(new ActionListener() {
 			
 			@Override
@@ -286,7 +314,8 @@ public class MainGui extends GuiFunctions{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				TabelaPregled tabela = new TabelaPregled(user);
+				tabela.setVisible(true);
 			}
 		});
 	}

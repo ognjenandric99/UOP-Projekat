@@ -1,6 +1,8 @@
 package ostalo;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import accounts.Doktor;
 import accounts.Pacijent;
@@ -9,10 +11,10 @@ import startPackage.Status;
 public class Pregled extends OstaloFunctions {
 	private String ID,Opis,Soba;
 	private String Pacijent;
-	private LocalDateTime Termin;
+	private GregorianCalendar Termin;
 	private Status Status;
 	private String Doktor;
-	public Pregled(String ID, String opis, String soba,String pacijent, String doktor, LocalDateTime termin,
+	public Pregled(String ID, String opis, String soba,String pacijent, String doktor, GregorianCalendar termin,
 			startPackage.Status status) {
 
 		this.ID = ID;
@@ -41,14 +43,14 @@ public class Pregled extends OstaloFunctions {
 	public void setSoba(String soba) {
 		Soba = soba;
 	}
-	public LocalDateTime getTermin() {
-		return Termin;
-	}
-	public void setTermin(LocalDateTime termin) {
-		Termin = termin;
-	}
 	public Status getStatus() {
 		return Status;
+	}
+	public GregorianCalendar getTermin() {
+		return Termin;
+	}
+	public void setTermin(GregorianCalendar termin) {
+		Termin = termin;
 	}
 	public void setStatus(Status status) {
 		Status = status;
@@ -65,7 +67,10 @@ public class Pregled extends OstaloFunctions {
 	public void setDoktor(String doktor) {
 		Doktor = doktor;
 	}
-	
+	public String vratiFormatiranDatum() {
+		String ispis = String.valueOf(this.Termin.get(Calendar.YEAR))+"-"+String.valueOf(this.Termin.get(Calendar.MONTH))+"-"+String.valueOf(this.Termin.get(Calendar.DAY_OF_MONTH))+" "+String.valueOf(this.Termin.get(Calendar.HOUR))+":"+String.valueOf(this.Termin.get(Calendar.MINUTE));
+		return ispis;
+	}
 	
 	
 }

@@ -31,16 +31,12 @@ public class Main {
 		
 		/*
 		 * ODRADITI SLEDECE
-		 * 1) Prikaz svih korisnika ----ODRADJENO
-		 * 2) Izmena korisnika tako sto se unese JMBG ----ODRADJENO
-		 * 3) Pacijent - Prikaz njegovih pregleda
+
 		 * 4) Pacijent - Zakazivanje pregleda - Status Zatrazen
-		 * 5) Doktor - prikaz njegovih pregleda
 		 * 6) Doktor - menjanje statusa pregleda u Otkazan/Zavrsen
 		 * 7) Sestra - Zatrazen u zakazan/otkazan
-		 * 8) Sestra - izdavanje racuna
-		 * 
-		 *
+		 * 9)Pacijent - Menjanje opisa kada je status Zatrazen
+		 * ODRADITI MENJANJE PREGLEDA
 		 * 
 		 */
 	}

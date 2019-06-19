@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import javax.swing.JFrame;
 
@@ -14,6 +15,7 @@ import accounts.MedicinskaSestra;
 import accounts.Pacijent;
 import ostalo.Knjizica;
 import ostalo.Pregled;
+import ostalo.Racun;
 import startPackage.Status;
 
 public class GuiFunctions extends JFrame {
@@ -91,8 +93,11 @@ public class GuiFunctions extends JFrame {
 			String[] tPr = linije1[i].split("\\|");
 			if(tPr[1].equalsIgnoreCase(user.getJmbg())) {
 				String now = tPr[5];
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		        LocalDateTime formatDateTime = LocalDateTime.parse(now, formatter);
+				String[] vreme = now.split("\\ ");
+				String[] godina = vreme[0].split("\\-");
+				String[] sati = vreme[1].split("\\:");
+				
+		        GregorianCalendar formatDateTime = new GregorianCalendar(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
 				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
 				pregledi.add(pregled);			}
 		}
@@ -106,14 +111,33 @@ public class GuiFunctions extends JFrame {
 			String[] tPr = linije1[i].split("\\|");
 			if(tPr[2].equalsIgnoreCase(user.getJmbg()) && !tPr[6].equalsIgnoreCase("Zatrazen")) {
 				String now = tPr[5];
-
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-		        LocalDateTime formatDateTime = LocalDateTime.parse(now, formatter);
-		        
+				String[] vreme = now.split("\\ ");
+				String[] godina = vreme[0].split("\\-");
+				String[] sati = vreme[1].split("\\:");
+				
+		        GregorianCalendar formatDateTime = new GregorianCalendar(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
 				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
 				pregledi.add(pregled);
 				}
+		}
+		return pregledi;
+	}
+	public ArrayList<Pregled> ucitajPreglede(){
+		ArrayList<Pregled> pregledi = new ArrayList<Pregled>();
+		String linije = getText("src/ostalo/pregledi.txt");
+		String[] linije1 = linije.split("\\;");
+		for(int i=0;i<linije1.length;i++) {
+			String[] tPr = linije1[i].split("\\|");
+				String now = tPr[5];
+				String[] vreme = now.split("\\ ");
+				String[] godina = vreme[0].split("\\-");
+				String[] sati = vreme[1].split("\\:");
+				
+		        GregorianCalendar formatDateTime = new GregorianCalendar(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
+				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
+				
+				pregledi.add(pregled);
+				
 		}
 		return pregledi;
 	}
@@ -205,6 +229,6 @@ public class GuiFunctions extends JFrame {
 		return false;
 		
 	}
-
+	
 	
 }

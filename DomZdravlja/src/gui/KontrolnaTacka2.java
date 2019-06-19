@@ -217,6 +217,19 @@ public class KontrolnaTacka2 extends GuiFunctions{
 			}
 		}
 		ispisiUFajl("src/ostalo/pregledi.txt", staritext);
+		
+		String staritextr ="";
+		String[] textfajlar = getText("src/ostalo/racuni.txt").split("\\;");
+		for(int i=0;i<textfajlar.length;i++) {
+			String[] tra = textfajlar[i].split("\\|");
+			if(tra[0].equalsIgnoreCase(pregled.getID())) {
+				uspeo = true;
+			}
+			else {
+				staritextr+=String.join("|", tra)+"\n";
+			}
+		}
+		ispisiUFajl("src/ostalo/racuni.txt", staritextr);
 		return uspeo;
 	}
 ////////////////////////////////////////////////////////////
@@ -437,5 +450,23 @@ public class KontrolnaTacka2 extends GuiFunctions{
 			
 		}
 		sacuvajListe(ociscenPacijent, ociscenDoktor, ociscenaSestra);
+	}
+	public void racunUFajl(Racun racun) {
+		Boolean postojiVec = false;
+		String fajl = getText("src/ostalo/racuni.txt");
+		String[] linije = fajl.split("\\;");
+		for(int i=0;i<linije.length;i++) {
+			String[] racunt = linije[i].split("\\|");
+			if(racunt[0].equalsIgnoreCase(racun.getPregled())) {
+				postojiVec = true;
+			}
+		}
+		if(postojiVec==false) {
+			String dodatak = racun.getPregled()+"|"+racun.getPacijent().getJmbg()+"|"+String.valueOf(racun.getCena())+"|"+String.valueOf(racun.getPlaceno()).toString()+"\n";
+			dodajUFajl("src/ostalo/racuni.txt", dodatak);
+		}
+		else {
+			System.out.println("Racun za taj pregled vec postoji.");
+		}
 	}
 }
