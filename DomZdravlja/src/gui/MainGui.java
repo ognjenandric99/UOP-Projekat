@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.w3c.dom.UserDataHandler;
@@ -36,7 +37,6 @@ public class MainGui extends GuiFunctions{
 	JMenuItem dodajKorisnika = new JMenuItem("Dodaj korisnika");
 	JMenuItem pogledajKorisnika = new JMenuItem("Pogledaj korisnika");
 	JMenuItem izmeniKorisnika = new JMenuItem("Izmeni korisnika");
-	JMenuItem obrisiKorisnika = new JMenuItem("Obrisi Korisnika");
 	JMenuItem prikaziKorisnike = new JMenuItem("Prikazi korisnike");
 	
 	
@@ -46,6 +46,7 @@ public class MainGui extends GuiFunctions{
 	JMenuItem prikaziZakazane = new JMenuItem("Zakazani pregledi");
 	JMenuItem prikaziGotove = new JMenuItem("Gotovi pregledi");
 	JMenuItem mojiPregledi = new JMenuItem("Moji pregledi");
+	JMenuItem izmeniPregled = new JMenuItem("Izmeni pregled");
 	
 	JMenu meniRacuni = new JMenu("Racuni");
 	JMenuItem izdajRacun = new JMenuItem("Izdaj racun");
@@ -61,7 +62,8 @@ public class MainGui extends GuiFunctions{
 	
 	public MainGui(Pacijent user) {
 		prozor();
-		
+		opcijePacijent();
+		eventsPacijent(user);
 	}
 	public MainGui(Doktor user) {
 		prozor();
@@ -85,7 +87,24 @@ public class MainGui extends GuiFunctions{
 		
 		
 	}
-	
+	public void opcijePacijent() {
+		setJMenuBar(meniBar);
+		meniBar.add(meniPregledi);
+		meniPregledi.add(zakaziPregled);
+		meniPregledi.add(mojiPregledi);
+		meniPregledi.add(izmeniPregled);
+		
+		meniBar.add(meniRacuni);
+		meniRacuni.add(mojiRacuni);
+		
+		meniBar.add(profil);
+		
+		//Odavde ide na desni deo 
+		 meniBar.add(Box.createGlue());
+		 meniBar.add(profil);
+		 profil.add(prikaziProfil);
+		 profil.add(logOut);
+	}
 	public void opcijeSestra() {
 		
 		setJMenuBar(meniBar);
@@ -93,7 +112,6 @@ public class MainGui extends GuiFunctions{
 		meniKorisnici.add(dodajKorisnika);
 		meniKorisnici.add(izmeniKorisnika);
 		meniKorisnici.add(pogledajKorisnika);
-		meniKorisnici.add(obrisiKorisnika);
 		meniKorisnici.add(prikaziKorisnike);
 		
 		meniBar.add(meniPregledi);
@@ -182,7 +200,69 @@ public class MainGui extends GuiFunctions{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				String jmbgKorisnika = (String)JOptionPane.showInputDialog(null, "Unesite JMBG Korisnika kojeg zelite da pogledate",
+						"Pregled Korisnika", JOptionPane.PLAIN_MESSAGE, null,
+						null, "");
 				
+				if(jmbgKorisnika.length()==13) {
+					Boolean stanje = false;
+					
+					for (Pacijent pac : pacijenti) {
+						if(pac.getJmbg().equalsIgnoreCase(jmbgKorisnika)) {
+							stanje=true;
+							TabelaKorisnik tabela = new TabelaKorisnik(pac);
+							tabela.setVisible(true);
+						}
+					}
+					
+					for (MedicinskaSestra sestra : sestre) {
+						if(sestra.getJmbg().equalsIgnoreCase(jmbgKorisnika)) {
+							stanje=true;
+							TabelaKorisnik tabela = new TabelaKorisnik(sestra);
+							tabela.setVisible(true);
+						}
+					}
+					for (Doktor doktor : doktori) {
+						if(doktor.getJmbg().equalsIgnoreCase(jmbgKorisnika)) {
+							stanje=true;
+							TabelaKorisnik tabela = new TabelaKorisnik(doktor);
+							tabela.setVisible(true);
+						}
+					}
+					if(stanje==false) {
+						JOptionPane.showMessageDialog( null, "JMBG koji ste uneli ne pripada ni jednom korisniku.",
+								"Info", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog( null, "Molimo Vas, unesite tacan JMBG.",
+							"Info", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
+		
+		prikaziKorisnike.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TabelaKorisnik tabela = new TabelaKorisnik();
+				tabela.setVisible(true);
+			}
+		});
+		
+		izmeniKorisnika.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String jmbgKorisnika = (String)JOptionPane.showInputDialog(null, "Unesite JMBG Korisnika kojeg zelite da izmenite",
+						"Izmena Korisnika", JOptionPane.PLAIN_MESSAGE, null,
+						null, "");
+				if(jmbgKorisnika.length()==13){
+					Profil profil = new Profil(jmbgKorisnika, user);
+					profil.setVisible(true);
+				}
 			}
 		});
 		
@@ -200,5 +280,7 @@ public class MainGui extends GuiFunctions{
 			
 		});
 	}
-	
+	public void eventsPacijent(Pacijent user) {
+		
+	}
 }
