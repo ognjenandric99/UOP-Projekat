@@ -25,8 +25,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Login login = new Login();
-		login.setVisible(true);
+		//Login login = new Login();
+		//login.setVisible(true);
 		
 		
 		/*
@@ -39,5 +39,17 @@ public class Main {
 		 * ODRADITI MENJANJE PREGLEDA
 		 * 
 		 */
+		
+		DateTimeFormatter fr = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date datum = new Date();
+		LocalDateTime vreme = LocalDateTime.now();
+		LocalDateTime nekoVreme = LocalDateTime.of(1999,10,11,12,12);
+		
+		
+		System.out.println(sdf.format(datum));
+		System.out.println(fr.format(vreme));
+		System.out.println(fr.format(nekoVreme));
+		
 	}
 }
