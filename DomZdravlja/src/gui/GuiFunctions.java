@@ -1,8 +1,11 @@
 package gui;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -97,7 +100,7 @@ public class GuiFunctions extends JFrame {
 				String[] godina = vreme[0].split("\\-");
 				String[] sati = vreme[1].split("\\:");
 				
-		        GregorianCalendar formatDateTime = new GregorianCalendar(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
+				LocalDateTime formatDateTime = LocalDateTime.of(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
 				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
 				pregledi.add(pregled);			}
 		}
@@ -115,7 +118,7 @@ public class GuiFunctions extends JFrame {
 				String[] godina = vreme[0].split("\\-");
 				String[] sati = vreme[1].split("\\:");
 				
-		        GregorianCalendar formatDateTime = new GregorianCalendar(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
+				LocalDateTime formatDateTime = LocalDateTime.of(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
 				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
 				pregledi.add(pregled);
 				}
@@ -133,7 +136,7 @@ public class GuiFunctions extends JFrame {
 				String[] godina = vreme[0].split("\\-");
 				String[] sati = vreme[1].split("\\:");
 				
-		        GregorianCalendar formatDateTime = new GregorianCalendar(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
+				LocalDateTime formatDateTime = LocalDateTime.of(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
 				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
 				
 				pregledi.add(pregled);
@@ -229,6 +232,38 @@ public class GuiFunctions extends JFrame {
 		return false;
 		
 	}
-	
+	public LocalDateTime formatiranUDateTime(String formatiran){
+		String[] vremena = formatiran.split("\\ ");
+		String[] godina = vremena[0].split("\\-");
+		String[] sati = vremena[1].split("\\:");
+		try {
+			LocalDateTime vreme = LocalDateTime.of(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
+			return vreme;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+	}
+	public void dodajUFajl(String path,String dodatak) {
+		String prethodno = getTextZaNastaviti(path);
+		try {
+			File file = new File(path);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer.write(prethodno+dodatak);
+			writer.close();
+			} catch (IOException e) {
+			e.printStackTrace();
+			}
+	}
+	public void ispisiUFajl(String path,String ispis) {
+		try {
+			File file = new File(path);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer.write(ispis);
+			writer.close();
+			} catch (IOException e) {
+			e.printStackTrace();
+			}
+	}
 	
 }

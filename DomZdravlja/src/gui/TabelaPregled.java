@@ -46,9 +46,10 @@ public class TabelaPregled extends KontrolnaTacka2 {
 	private ArrayList<Doktor> doktori = ucitajDoktore();
 	private ArrayList<MedicinskaSestra> sestre = ucitajSestre();
 	
+	private ArrayList<Pregled> pregledi1;
 	private ArrayList<Pregled> pregledi;
 	
-	private JButton izmeni = new JButton("Izmeni");
+	private JButton izmeni = new JButton("Pogledaj");
 	private JButton obrisi = new JButton("Obrisi");
 	
 	
@@ -64,7 +65,10 @@ public class TabelaPregled extends KontrolnaTacka2 {
 		prozor();
 		initGUI(user);
 	}
-	
+	TabelaPregled(String tip,MedicinskaSestra user){
+		prozor();
+		initGUI(tip,user);
+	}
 	public void prozor(){
 		setTitle("Dom Zdravlja");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -81,7 +85,7 @@ public class TabelaPregled extends KontrolnaTacka2 {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int sirinaprozora = (int)screenSize.getWidth();
 		int visinaprozora = (int)screenSize.getHeight();
-		
+		add(izmeni);
 		pregledi = ucitajPreglede(doktor);
 		String[] zaglavlja = new String[] { "ID Pregleda", "JMBG Pacijenta", "JMBG Doktora ","Opis pregleda","Soba","Termin","Status"};
 		Object[][] sadrzaj = new Object[pregledi.size()][zaglavlja.length];
@@ -110,6 +114,14 @@ public class TabelaPregled extends KontrolnaTacka2 {
 		      }
 		    };;
 		add(scrollPane);
+		izmeni.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						izmeniPregled(pregledi.get(tabela.getSelectedRow()),doktor.getJmbg());
+					}
+				});
 	}
 	
 	public void initGUI(MedicinskaSestra sestra) {
@@ -154,7 +166,7 @@ public class TabelaPregled extends KontrolnaTacka2 {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						izmeniPregled(pregledi.get(tabela.getSelectedRow()));
+						izmeniPregled(pregledi.get(tabela.getSelectedRow()),sestra.getJmbg());
 					}
 				});
 		obrisi.addActionListener(new ActionListener() {
@@ -185,7 +197,7 @@ public class TabelaPregled extends KontrolnaTacka2 {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int sirinaprozora = (int)screenSize.getWidth();
 		int visinaprozora = (int)screenSize.getHeight();
-		
+		add(izmeni);
 		pregledi = ucitajPreglede(pacijent);
 		String[] zaglavlja = new String[] { "ID Pregleda", "JMBG Pacijenta", "JMBG Doktora ","Opis pregleda","Soba","Termin","Status"};
 		Object[][] sadrzaj = new Object[pregledi.size()][zaglavlja.length];
@@ -214,15 +226,87 @@ public class TabelaPregled extends KontrolnaTacka2 {
 		      }
 		    };;
 		add(scrollPane);
+		izmeni.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						if(pregledi.get(tabela.getSelectedRow()).getStatus().toString().equalsIgnoreCase("Zatrazen")) {
+							izmeniPregled(pregledi.get(tabela.getSelectedRow()),pacijent.getJmbg());
+						}
+						else {
+							System.out.println("Pregled nije u statusu ,,Zatrazen'' stoga je pacijentu zabranjeno menjanje njegovih atributa.");
+						}
+					}
+				});
 	}
 	
-	public void izmeniPregled(Pregled pregled) {
-		PregledGUI pregled1 = new PregledGUI(pregled);
+	public void izmeniPregled(Pregled pregled, String jmbg) {
+		PregledGUI pregled1 = new PregledGUI(pregled,jmbg);
 		pregled1.setVisible(true);
 	}
 	
-	public void initGUI() {
-		System.out.println("Morate biti ulogovani da bi ste pogledali preglede.");
+	public void initGUI(String tip, MedicinskaSestra user) {
+		MigLayout mig = new MigLayout("wrap 2");
+		setLayout(mig);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int sirinaprozora = (int)screenSize.getWidth();
+		int visinaprozora = (int)screenSize.getHeight();
+		add(izmeni);add(obrisi);
+		
+		pregledi1 = ucitajPreglede();
+		pregledi= new ArrayList<Pregled>();
+		for (Pregled pregled : pregledi1) {
+					if(pregled.getStatus().toString().equalsIgnoreCase(tip)) {
+						pregledi.add(pregled);
+					}
+		}
+		String[] zaglavlja = new String[] { "ID Pregleda", "JMBG Pacijenta", "JMBG Doktora ","Opis pregleda","Soba","Termin","Status"};
+		Object[][] sadrzaj = new Object[pregledi.size()][zaglavlja.length];
+		int i=0;
+		
+		
+		while(i<pregledi.size()) {
+			if(pregledi.get(i).getStatus().toString().equalsIgnoreCase(tip)) {
+				sadrzaj[i][0] = pregledi.get(i).getID();
+				sadrzaj[i][1] = pregledi.get(i).getPacijent();
+				sadrzaj[i][2] = pregledi.get(i).getDoktor();
+				sadrzaj[i][3] = pregledi.get(i).getOpis();
+				sadrzaj[i][4] = pregledi.get(i).getSoba();
+				sadrzaj[i][5] = pregledi.get(i).vratiFormatiranDatum();
+				sadrzaj[i][6] =  String.valueOf(pregledi.get(i).getStatus()).toString();
+				i++;
+			}
+			else {
+				i++;
+				
+			}
+			
+		}
+		
+		DefaultTableModel model = new DefaultTableModel(sadrzaj, zaglavlja);
+		JTable tabela = new JTable(model);
+		tabela.setRowSelectionAllowed(true);
+		tabela.setColumnSelectionAllowed(false);
+		tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabela.setDefaultEditor(Object.class, null);
+		JScrollPane scrollPane = new JScrollPane(tabela){
+		      @Override
+		      public Dimension getPreferredSize() {
+		        return new Dimension(sirinaprozora, visinaprozora);
+		      }
+		    };;
+		
+		add(scrollPane);
+		
+		izmeni.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				izmeniPregled(pregledi.get(tabela.getSelectedRow()),user.getJmbg());
+			}
+		});
 	}
 	public void events() {
 		

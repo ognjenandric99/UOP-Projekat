@@ -2,6 +2,8 @@ package ostalo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -12,7 +14,7 @@ import startPackage.TipKnjizice;
 public class Knjizica extends OstaloFunctions{
 	private String pacijent;
 	private TipKnjizice Kategorija;
-	private GregorianCalendar DatumIsteka;
+	private LocalDateTime DatumIsteka;
 	private Boolean aktivna = false;
 	public Knjizica(String jmbgPacijenta) {
 		this.pacijent = jmbgPacijenta;
@@ -25,7 +27,7 @@ public class Knjizica extends OstaloFunctions{
 				this.aktivna=Boolean.valueOf(tKnj[3]);
 				try {
 					String[] datumi = tKnj[2].split("\\-");
-					GregorianCalendar cal = new GregorianCalendar(Integer.valueOf(datumi[0]),Integer.valueOf(datumi[1]),Integer.valueOf(datumi[2]));
+					LocalDateTime cal = LocalDateTime.of(Integer.valueOf(datumi[0]),Integer.valueOf(datumi[1]),Integer.valueOf(datumi[2]),0,0);
 					this.DatumIsteka = cal;
 				}
 				catch(Exception e) {
@@ -55,14 +57,17 @@ public class Knjizica extends OstaloFunctions{
 	public void setAktivna(Boolean aktivna) {
 		this.aktivna = aktivna;
 	}
-	public GregorianCalendar getDatumIsteka() {
+	
+	public LocalDateTime getDatumIsteka() {
 		return DatumIsteka;
 	}
-	public void setDatumIsteka(GregorianCalendar datumIsteka) {
+	public void setDatumIsteka(LocalDateTime datumIsteka) {
 		DatumIsteka = datumIsteka;
 	}
 	public String vratiFormatiranDatum() {
-		String ispis = String.valueOf(this.DatumIsteka.get(Calendar.YEAR))+"-"+String.valueOf(this.DatumIsteka.get(Calendar.MONTH))+"-"+String.valueOf(this.DatumIsteka.get(Calendar.DAY_OF_MONTH));
+		DateTimeFormatter fr = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); 
+		String ispis = fr.format(this.DatumIsteka);
+				
 		return ispis;
 	}
 	

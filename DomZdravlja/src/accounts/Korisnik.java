@@ -251,7 +251,7 @@ public abstract class Korisnik  {
 				String[] godina = vreme[0].split("\\-");
 				String[] sati = vreme[1].split("\\:");
 				
-		        GregorianCalendar formatDateTime = new GregorianCalendar(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
+				LocalDateTime formatDateTime = LocalDateTime.of(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
 				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
 				pregledi.add(pregled);			}
 		}
@@ -269,7 +269,7 @@ public abstract class Korisnik  {
 				String[] godina = vreme[0].split("\\-");
 				String[] sati = vreme[1].split("\\:");
 				
-		        GregorianCalendar formatDateTime = new GregorianCalendar(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
+		        LocalDateTime formatDateTime = LocalDateTime.of(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
 				Pregled pregled = new Pregled(tPr[0], tPr[3], tPr[4],tPr[1],tPr[2],formatDateTime,Status.valueOf(tPr[6]));
 				pregledi.add(pregled);
 				}

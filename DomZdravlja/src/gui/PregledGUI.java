@@ -70,10 +70,22 @@ public class PregledGUI extends KontrolnaTacka2 {
 	
 	
 	
-	public PregledGUI(Pregled pregled) {
+	public PregledGUI(Pregled pregled, String jmbgUsera) {
 		prozor();
-		initGUI(pregled);
+		//initGUI(pregled);
 		eventsSestra();
+		if(jmbgUPacijenta(jmbgUsera)!=null) {
+			pacijentopcije(pregled);
+		}
+		else if(jmbgUDoktora(jmbgUsera)!=null) {
+			doktoropcije(pregled);
+		}
+		else if(jmbgUMSestru(jmbgUsera)!=null) {
+			sestraopcije(pregled);
+		}
+		else {
+			System.out.println("Doslo je do greske prilikom ucitavanja jmbga u objekat.");
+		}
 	}
 	public PregledGUI() {
 		
@@ -116,6 +128,7 @@ public class PregledGUI extends KontrolnaTacka2 {
 		comboStatus.addItem(Status.valueOf("Zakazan"));
 		comboStatus.addItem(Status.valueOf("Otkazan"));
 		comboStatus.addItem(Status.valueOf("Zavrsen"));
+		comboStatus.setSelectedItem(pregled.getStatus());
 		add(lStatus);add(comboStatus);
 		
 		add(btnSacuvaj);add(btnCancel);
@@ -129,7 +142,13 @@ public class PregledGUI extends KontrolnaTacka2 {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				 if(proveriVrednostiPregled()) {
+					 Pregled pregled = new Pregled(txtIDPregleda.getText(), txtOpis.getText(), txtSoba.getText(),txtJMBGPac.getText(),txtJMBGDok.getText(),formatiranUDateTime(txtTermin.getText()),Status.valueOf(comboStatus.getSelectedItem().toString()));
+					 izmeniDodajPregled(pregled);
+				 }
+				 else {
+					 System.out.println("Morate uneti sve vrednosti u odgovarajucem formatu.");
+				 }
 			}
 		});
 		
@@ -176,8 +195,139 @@ public class PregledGUI extends KontrolnaTacka2 {
 		else {
 			System.out.println("Morate uneti sobu za pregled");
 		}
-		return false;
+		if(formatiranUDateTime(txtTermin.getText())!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Datum nije u korektnom formatu.");
+		}
+		if(comboStatus.getSelectedItem()!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Morate da odaberete status");
+		}
+		if(tacno==7) {
+			return true;
+		}
+		else {
+			return false;
+		}
 		
 	}
 	
+	public void izmeniDodajPregled(Pregled pregled) {
+		String[] linije = getText("src/ostalo/pregledi.txt").split("\\;");
+		Boolean nasao = false;
+		String staritext = "";
+		for (String string : linije) {
+			String[] stringovi = string.split("\\|");
+			if(stringovi[0].equalsIgnoreCase(pregled.getID())) {
+				nasao = true;
+				String linija = pregled.getID()+"|"+pregled.getPacijent()+"|"+pregled.getDoktor()+"|"+pregled.getOpis()+"|"+pregled.getSoba()+"|"+pregled.vratiFormatiranDatum()+"|"+String.valueOf(pregled.getStatus())+'\n';
+				staritext +=linija;
+			}
+			else {
+				staritext +=string+"\n";
+			}
+		}
+		if(nasao==false) {
+			staritext +=pregled.getID()+"|"+pregled.getPacijent()+"|"+pregled.getDoktor()+"|"+pregled.getOpis()+"|"+pregled.getSoba()+"|"+pregled.vratiFormatiranDatum()+"|"+String.valueOf(pregled.getStatus())+'\n';
+		}
+		ispisiUFajl("src/ostalo/pregledi.txt", staritext);
+	}
+
+	public void pacijentopcije(Pregled pregled) {
+		txtIDPregleda.setText(pregled.getID());
+		txtIDPregleda.setEditable(false);
+		add(lIDPregleda);add(txtIDPregleda);
+		
+		txtJMBGPac.setEditable(false);
+		txtJMBGPac.setText(pregled.getPacijent());
+		add(lJMBGPac);add(txtJMBGPac);
+		
+		txtJMBGDok.setEditable(false);
+		txtJMBGDok.setText(pregled.getDoktor());
+		add(lJMBGDok);add(txtJMBGDok);
+		System.out.println(pregled.getStatus().toString());
+		if(pregled.getStatus().toString().equalsIgnoreCase("Zatrazen")) {
+			txtOpis.setEditable(true);
+		}
+		else {
+			txtOpis.setEditable(false);
+		}
+		txtOpis.setText(pregled.getOpis());
+		add(lOpis);add(txtOpis);
+		
+		txtSoba.setEditable(false);
+		txtSoba.setText(pregled.getSoba());
+		add(lSoba);add(txtSoba);
+		
+		txtTermin.setEditable(false);
+		txtTermin.setText(pregled.vratiFormatiranDatum());
+		add(lTermin);add(txtTermin);
+		
+		comboStatus.addItem(Status.valueOf("Zatrazen"));
+		comboStatus.addItem(Status.valueOf("Otkazan"));
+		comboStatus.setSelectedItem(pregled.getStatus());
+		add(lStatus);add(comboStatus);
+		
+		add(btnSacuvaj);add(btnCancel);
+		
+	}
+	public void doktoropcije(Pregled pregled) {
+		txtIDPregleda.setText(pregled.getID());
+		txtIDPregleda.setEditable(false);
+		add(lIDPregleda);add(txtIDPregleda);
+		
+		txtJMBGPac.setText(pregled.getPacijent());
+		add(lJMBGPac);add(txtJMBGPac);
+		
+		txtJMBGDok.setText(pregled.getDoktor());
+		add(lJMBGDok);add(txtJMBGDok);
+		
+		txtOpis.setText(pregled.getOpis());
+		add(lOpis);add(txtOpis);
+		
+		txtSoba.setText(pregled.getSoba());
+		add(lSoba);add(txtSoba);
+		
+		txtTermin.setText(pregled.vratiFormatiranDatum());
+		add(lTermin);add(txtTermin);
+		
+		comboStatus.addItem(Status.valueOf("Zakazan"));
+		comboStatus.addItem(Status.valueOf("Otkazan"));
+		comboStatus.addItem(Status.valueOf("Zavrsen"));
+		comboStatus.setSelectedItem(pregled.getStatus());
+		add(lStatus);add(comboStatus);
+		
+		add(btnSacuvaj);add(btnCancel);
+	}
+	public void sestraopcije(Pregled pregled) {
+		txtIDPregleda.setText(pregled.getID());
+		txtIDPregleda.setEditable(false);
+		add(lIDPregleda);add(txtIDPregleda);
+		
+		txtJMBGPac.setText(pregled.getPacijent());
+		add(lJMBGPac);add(txtJMBGPac);
+		
+		txtJMBGDok.setText(pregled.getDoktor());
+		add(lJMBGDok);add(txtJMBGDok);
+		
+		txtOpis.setText(pregled.getOpis());
+		add(lOpis);add(txtOpis);
+		
+		txtSoba.setText(pregled.getSoba());
+		add(lSoba);add(txtSoba);
+		
+		txtTermin.setText(pregled.vratiFormatiranDatum());
+		add(lTermin);add(txtTermin);
+		
+		comboStatus.addItem(Status.valueOf("Zatrazen"));
+		comboStatus.addItem(Status.valueOf("Zakazan"));
+		comboStatus.setSelectedItem(pregled.getStatus());
+		add(lStatus);add(comboStatus);
+		
+		add(btnSacuvaj);add(btnCancel);
+	}
 }

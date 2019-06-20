@@ -2,6 +2,7 @@ package ostalo;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -13,10 +14,10 @@ import startPackage.Status;
 public class Pregled extends OstaloFunctions {
 	private String ID,Opis,Soba;
 	private String Pacijent;
-	private GregorianCalendar Termin;
+	private LocalDateTime Termin;
 	private Status Status;
 	private String Doktor;
-	public Pregled(String ID, String opis, String soba,String pacijent, String doktor, GregorianCalendar termin,
+	public Pregled(String ID, String opis, String soba,String pacijent, String doktor, LocalDateTime termin,
 			startPackage.Status status) {
 
 		this.ID = ID;
@@ -48,10 +49,11 @@ public class Pregled extends OstaloFunctions {
 	public Status getStatus() {
 		return Status;
 	}
-	public GregorianCalendar getTermin() {
+	
+	public LocalDateTime getTermin() {
 		return Termin;
 	}
-	public void setTermin(GregorianCalendar termin) {
+	public void setTermin(LocalDateTime termin) {
 		Termin = termin;
 	}
 	public void setStatus(Status status) {
@@ -70,18 +72,10 @@ public class Pregled extends OstaloFunctions {
 		Doktor = doktor;
 	}
 	public String vratiFormatiranDatum() {
-		String ispis = String.valueOf(this.Termin.get(Calendar.YEAR))+"-"+String.valueOf(this.Termin.get(Calendar.MONTH))+"-"+String.valueOf(this.Termin.get(Calendar.DAY_OF_MONTH))+" "+String.valueOf(this.Termin.get(Calendar.HOUR))+":"+String.valueOf(this.Termin.get(Calendar.MINUTE));
+		DateTimeFormatter fr = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); 
+		String ispis = fr.format(this.Termin);
 		return ispis;
 	}
-	public GregorianCalendar formatiranUGregorian(String formatiran){
-		String[] kojije = formatiran.split("\\ ");
-		if(kojije.length==1) {
-			
-		}
-		else {
-			
-		}
-		return null;
-	}
+	
 	
 }
