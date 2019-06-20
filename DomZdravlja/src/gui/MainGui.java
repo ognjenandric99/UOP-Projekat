@@ -69,7 +69,8 @@ public class MainGui extends GuiFunctions{
 	}
 	public MainGui(Doktor user) {
 		prozor();
-		
+		opcijeDoktor();
+		eventsDoktora(user);
 	}
 	public MainGui(MedicinskaSestra user) {
 		prozor();
@@ -94,7 +95,6 @@ public class MainGui extends GuiFunctions{
 		meniBar.add(meniPregledi);
 		meniPregledi.add(zakaziPregled);
 		meniPregledi.add(mojiPregledi);
-		meniPregledi.add(izmeniPregled);
 		
 		meniBar.add(meniRacuni);
 		meniRacuni.add(mojiRacuni);
@@ -104,7 +104,6 @@ public class MainGui extends GuiFunctions{
 		//Odavde ide na desni deo 
 		 meniBar.add(Box.createGlue());
 		 meniBar.add(profil);
-		 profil.add(prikaziProfil);
 		 profil.add(logOut);
 	}
 	public void opcijeSestra() {
@@ -117,7 +116,9 @@ public class MainGui extends GuiFunctions{
 		meniKorisnici.add(prikaziKorisnike);
 		
 		meniBar.add(meniPregledi);
-		meniPregledi.add(zakaziPregled);
+		meniPregledi.add(prikaziZatrazene);
+		meniPregledi.add(prikaziGotove);
+		meniPregledi.add(prikaziZakazane);
 		meniPregledi.add(prikaziSvePreglede);
 		
 		meniBar.add(meniRacuni);
@@ -134,7 +135,20 @@ public class MainGui extends GuiFunctions{
 		 
 		 
 	}
+	public void opcijeDoktor() {
 
+		setJMenuBar(meniBar);
+		
+		meniBar.add(meniPregledi);
+		meniPregledi.add(prikaziZakazane);
+		meniPregledi.add(prikaziSvePreglede);
+		
+		
+		//Odavde ide na desni deo 
+		 meniBar.add(Box.createGlue());
+		 meniBar.add(profil);
+		 profil.add(logOut);
+	}
 	public String[] izvuci(String stvar, Integer broj, String path) {
 		String izvucenfajl = getText(path);
 		String[] rezultat = null;
@@ -271,7 +285,8 @@ public class MainGui extends GuiFunctions{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				TabelaPregled pregled = new TabelaPregled("Zatrazen",user);
+				pregled.setVisible(true);
 			}
 		});
 		
@@ -282,6 +297,26 @@ public class MainGui extends GuiFunctions{
 				// TODO Auto-generated method stub
 				TabelaPregled tabela = new TabelaPregled(user);
 				tabela.setVisible(true);
+			}
+		});
+		
+		prikaziZakazane.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TabelaPregled pregled = new TabelaPregled("Zakazan",user);
+				pregled.setVisible(true);
+			}
+		});
+		
+		prikaziGotove.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TabelaPregled pregled = new TabelaPregled("Zavrsen",user);
+				pregled.setVisible(true);
 			}
 		});
 		
@@ -318,5 +353,41 @@ public class MainGui extends GuiFunctions{
 				tabela.setVisible(true);
 			}
 		});
+		logOut.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						MainGui.this.setVisible(false);
+						MainGui.this.dispose();
+						Login login = new Login();
+						login.setVisible(true);
+						
+						
+					}
+					
+				});
+		zakaziPregled.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String opisPregleda = (String)JOptionPane.showInputDialog(null, "Unesite opis pregleda",
+						"Zakazivanje pregleda", JOptionPane.PLAIN_MESSAGE, null,
+						null, "");
+				if(opisPregleda.length()!=0) {
+					ArrayList<Pregled> pregledi = ucitajPreglede();
+					int id = pregledi.size()+1;
+					String dodatak = id+"|"+user.getJmbg()+"|"+user.getLekar().getJmbg()+"|"+opisPregleda+"|X|9999-12-31 23:59|Zatrazen";
+					dodajUFajl("src/ostalo/pregledi.txt", dodatak);
+				}
+				else {
+					JOptionPane.showMessageDialog( null, "Morate uneti opis pregleda prilikom zakazivanja.",
+							"Info", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
+	}
+	public void eventsDoktora(Doktor user) {
+		
 	}
 }
