@@ -1,7 +1,9 @@
 package ostalo;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import accounts.Doktor;
@@ -71,6 +73,15 @@ public class Pregled extends OstaloFunctions {
 		String ispis = String.valueOf(this.Termin.get(Calendar.YEAR))+"-"+String.valueOf(this.Termin.get(Calendar.MONTH))+"-"+String.valueOf(this.Termin.get(Calendar.DAY_OF_MONTH))+" "+String.valueOf(this.Termin.get(Calendar.HOUR))+":"+String.valueOf(this.Termin.get(Calendar.MINUTE));
 		return ispis;
 	}
-	
+	public GregorianCalendar formatiranUGregorian(String formatiran){
+		String[] kojije = formatiran.split("\\ ");
+		if(kojije.length==1) {
+			
+		}
+		else {
+			
+		}
+		return null;
+	}
 	
 }

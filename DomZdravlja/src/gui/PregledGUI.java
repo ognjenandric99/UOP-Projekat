@@ -94,6 +94,7 @@ public class PregledGUI extends KontrolnaTacka2 {
 	public void initGUI(Pregled pregled) {
 		
 		txtIDPregleda.setText(pregled.getID());
+		txtIDPregleda.setEditable(false);
 		add(lIDPregleda);add(txtIDPregleda);
 		
 		txtJMBGPac.setText(pregled.getPacijent());
@@ -128,33 +129,7 @@ public class PregledGUI extends KontrolnaTacka2 {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Boolean nasao = false;
-				for (Pregled pregled : pregledi) {
-					if(pregled.getID().equalsIgnoreCase(txtIDPregleda.getText())) {
-						nasao=true;
-						int cena = 0;
-						Pacijent pac = jmbgUPacijenta(pregled.getPacijent());
-						String kategorija = String.valueOf(pac.getKnjizica().getKategorija());
-						if(kategorija.equalsIgnoreCase("prvi")) {
-							cena = 300;
-						}
-						else if(kategorija.equalsIgnoreCase("drugi")) {
-							cena = 50;
-						}
-						else if(kategorija.equalsIgnoreCase("treci")) {
-							cena = 0;
-						}
-						else {
-							System.out.println("Doslo je do greske.");
-						}
-						Racun racun = new Racun(jmbgUPacijenta(pregled.getPacijent()), pregled.getID(), cena, false);
-						racunUFajl(racun);
-					}
-				}
-				if(nasao==false) {
-					JOptionPane.showMessageDialog( null, "ID Pregleda ne postoji u nasem sistemu.",
-							"Greska", JOptionPane.INFORMATION_MESSAGE);
-				}
+				
 			}
 		});
 		
@@ -169,6 +144,40 @@ public class PregledGUI extends KontrolnaTacka2 {
 					}
 				});
 	}
-	
+	public Boolean proveriVrednostiPregled() {
+		int tacno=0;
+		if(txtIDPregleda.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("ID Pregleda je kraci od 1 karaktera.");
+		}
+		if(jmbgUPacijenta(txtJMBGPac.getText())!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli pacijenta u odgovarajucem formatu.");
+		}
+		if(jmbgUDoktora(txtJMBGDok.getText())!=null) {
+			tacno++;
+		}
+		else {
+			System.out.println("Niste uneli doktora u odgovarajucem formatu.");
+		}
+		if(txtOpis.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Morate uneti opis pregleda.");
+		}
+		if(txtSoba.getText().length()>0) {
+			tacno++;
+		}
+		else {
+			System.out.println("Morate uneti sobu za pregled");
+		}
+		return false;
+		
+	}
 	
 }
