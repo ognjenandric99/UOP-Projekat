@@ -120,6 +120,7 @@ public class MainGui extends GuiFunctions{
 		meniPregledi.add(prikaziGotove);
 		meniPregledi.add(prikaziZakazane);
 		meniPregledi.add(prikaziSvePreglede);
+		meniPregledi.add(zakaziPregled);
 		
 		meniBar.add(meniRacuni);
 		meniRacuni.add(izdajRacun);
@@ -320,6 +321,15 @@ public class MainGui extends GuiFunctions{
 			}
 		});
 		
+		zakaziPregled.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				PregledGUI pregled = new PregledGUI();
+				pregled.setVisible(true);
+			}
+		});
 		izdajRacun.addActionListener(new ActionListener() {
 			
 			@Override
@@ -388,6 +398,23 @@ public class MainGui extends GuiFunctions{
 		});
 	}
 	public void eventsDoktora(Doktor user) {
-		
+		prikaziZakazane.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TabelaPregled tabela = new TabelaPregled("Zakazan",user);
+				tabela.setVisible(true);
+			}
+		});
+		prikaziSvePreglede.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TabelaPregled tabela = new TabelaPregled(user);
+				tabela.setVisible(true);
+			}
+		});
 	}
 }

@@ -233,10 +233,11 @@ public class GuiFunctions extends JFrame {
 		
 	}
 	public LocalDateTime formatiranUDateTime(String formatiran){
-		String[] vremena = formatiran.split("\\ ");
-		String[] godina = vremena[0].split("\\-");
-		String[] sati = vremena[1].split("\\:");
+		
 		try {
+			String[] vremena = formatiran.split("\\ ");
+			String[] godina = vremena[0].split("\\-");
+			String[] sati = vremena[1].split("\\:");
 			LocalDateTime vreme = LocalDateTime.of(Integer.valueOf(godina[0]),Integer.valueOf(godina[1]),Integer.valueOf(godina[2]),Integer.valueOf(sati[0]),Integer.valueOf(sati[1]));
 			return vreme;
 		} catch (Exception e) {
@@ -264,6 +265,14 @@ public class GuiFunctions extends JFrame {
 			} catch (IOException e) {
 			e.printStackTrace();
 			}
+	}
+	public void sacuvajKnjiziceUFajl(ArrayList<Knjizica> knjizice) {
+		String text = "";
+		for (Knjizica knjizica : knjizice) {
+			String istek = knjizica.getDatumIsteka().getYear()+"-"+knjizica.getDatumIsteka().getMonthValue()+"-"+knjizica.getDatumIsteka().getDayOfMonth();
+			text +=knjizica.getPacijent()+"|"+knjizica.getKategorija()+"|"+istek+"|"+String.valueOf(knjizica.getAktivna())+"\n";
+		}
+		ispisiUFajl("src/ostalo/knjizice.txt", text);
 	}
 	
 }

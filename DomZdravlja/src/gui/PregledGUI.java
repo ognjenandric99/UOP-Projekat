@@ -88,7 +88,9 @@ public class PregledGUI extends KontrolnaTacka2 {
 		}
 	}
 	public PregledGUI() {
-		
+		prozor();
+		initGUI();
+		eventsSestra();
 	}
 	
 	public void prozor() {
@@ -102,9 +104,29 @@ public class PregledGUI extends KontrolnaTacka2 {
 		setLayout(mig);
 	}
 	
-	
-	public void initGUI(Pregled pregled) {
+	public void initGUI() {
+		int id = pregledi.size()+1;
+		txtIDPregleda.setText(String.valueOf(id));
+		txtIDPregleda.setEditable(false);
+		add(lIDPregleda);add(txtIDPregleda);
 		
+		add(lJMBGPac);add(txtJMBGPac);
+		
+		add(lJMBGDok);add(txtJMBGDok);
+		
+		add(lOpis);add(txtOpis);
+		
+		add(lSoba);add(txtSoba);
+		
+		add(lTermin);add(txtTermin);
+		
+		comboStatus.addItem(Status.valueOf("Zatrazen"));
+		comboStatus.addItem(Status.valueOf("Zakazan"));
+		add(lStatus);add(comboStatus);
+		
+		add(btnSacuvaj);add(btnCancel);
+	}
+	public void initGUI(Pregled pregled) {
 		txtIDPregleda.setText(pregled.getID());
 		txtIDPregleda.setEditable(false);
 		add(lIDPregleda);add(txtIDPregleda);
@@ -143,8 +165,15 @@ public class PregledGUI extends KontrolnaTacka2 {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				 if(proveriVrednostiPregled()) {
-					 Pregled pregled = new Pregled(txtIDPregleda.getText(), txtOpis.getText(), txtSoba.getText(),txtJMBGPac.getText(),txtJMBGDok.getText(),formatiranUDateTime(txtTermin.getText()),Status.valueOf(comboStatus.getSelectedItem().toString()));
-					 izmeniDodajPregled(pregled);
+					
+						 Pregled pregled = new Pregled(txtIDPregleda.getText(), txtOpis.getText(), txtSoba.getText(),txtJMBGPac.getText(),txtJMBGDok.getText(),formatiranUDateTime(txtTermin.getText()),Status.valueOf(comboStatus.getSelectedItem().toString()));
+						 if(proveriVremePregled(pregled)) {
+							 izmeniDodajPregled(pregled);
+						 pregledi.add(pregled);
+					 }
+						 else {
+							 System.out.println("Datum pregleda se preklapa sa odredjenim datumom.");
+						 }
 				 }
 				 else {
 					 System.out.println("Morate uneti sve vrednosti u odgovarajucem formatu.");
@@ -163,6 +192,17 @@ public class PregledGUI extends KontrolnaTacka2 {
 					}
 				});
 	}
+	
+	public Boolean proveriVremePregled(Pregled pregled) {
+		ArrayList<Pregled> pregledi2 = ucitajPreglede();
+		for (Pregled pregled2 : pregledi2) {
+			if(pregled.getDoktor().equalsIgnoreCase(pregled2.getDoktor()) && pregled2.getTermin().minusMinutes(15).compareTo(pregled.getTermin())<0 && pregled2.getTermin().plusMinutes(15).compareTo(pregled.getTermin())>0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public Boolean proveriVrednostiPregled() {
 		int tacno=0;
 		if(txtIDPregleda.getText().length()>0) {
@@ -280,21 +320,32 @@ public class PregledGUI extends KontrolnaTacka2 {
 		txtIDPregleda.setEditable(false);
 		add(lIDPregleda);add(txtIDPregleda);
 		
+		txtJMBGDok.setEditable(false);
+		txtJMBGPac.setEditable(false);
 		txtJMBGPac.setText(pregled.getPacijent());
 		add(lJMBGPac);add(txtJMBGPac);
 		
 		txtJMBGDok.setText(pregled.getDoktor());
 		add(lJMBGDok);add(txtJMBGDok);
 		
+		txtOpis.setEditable(false);
 		txtOpis.setText(pregled.getOpis());
 		add(lOpis);add(txtOpis);
+		
+		txtSoba.setEditable(false);
+		
 		
 		txtSoba.setText(pregled.getSoba());
 		add(lSoba);add(txtSoba);
 		
+		txtTermin.setEditable(false);
 		txtTermin.setText(pregled.vratiFormatiranDatum());
 		add(lTermin);add(txtTermin);
 		
+		
+		if(pregled.getStatus().toString().equalsIgnoreCase("Zavrsen") || pregled.getStatus().toString().equalsIgnoreCase("Otkazan")) {
+			comboStatus.setEnabled(false);
+		}
 		comboStatus.addItem(Status.valueOf("Zakazan"));
 		comboStatus.addItem(Status.valueOf("Otkazan"));
 		comboStatus.addItem(Status.valueOf("Zavrsen"));

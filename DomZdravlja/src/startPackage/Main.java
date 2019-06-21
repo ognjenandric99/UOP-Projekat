@@ -28,18 +28,14 @@ public class Main {
 		Login login = new Login();
 		login.setVisible(true);
 		
-		
 		/*
 		 * ODRADITI SLEDECE
 
-		 * 4) Pacijent - Zakazivanje pregleda - Status Zatrazen
-		 * 6) Doktor - menjanje statusa pregleda u Otkazan/Zavrsen
-		 * 7) Sestra - Zatrazen u zakazan/otkazan
-		 * 9)Pacijent - Menjanje opisa kada je status Zatrazen
-		 * ODRADITI MENJANJE PREGLEDA
+		 * Odraditi ciscenje knjizica, tako da ako neki user ima 2 knjizice, da obrise stariju.
 		 * 
 		 */
 		
 		
 	}
+
 }

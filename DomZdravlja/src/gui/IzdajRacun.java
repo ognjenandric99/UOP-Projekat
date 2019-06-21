@@ -92,17 +92,22 @@ public class IzdajRacun extends KontrolnaTacka2 {
 							int cena = 0;
 							Pacijent pac = jmbgUPacijenta(pregled.getPacijent());
 							String kategorija = String.valueOf(pac.getKnjizica().getKategorija());
-							if(kategorija.equalsIgnoreCase("prvi")) {
+							if(pac.getKnjizica().getAktivna()==false) {
 								cena = 300;
 							}
-							else if(kategorija.equalsIgnoreCase("drugi")) {
-								cena = 50;
-							}
-							else if(kategorija.equalsIgnoreCase("treci")) {
-								cena = 0;
-							}
 							else {
-								System.out.println("Doslo je do greske.");
+								if(kategorija.equalsIgnoreCase("prvi")) {
+									cena = 300;
+								}
+								else if(kategorija.equalsIgnoreCase("drugi")) {
+									cena = 50;
+								}
+								else if(kategorija.equalsIgnoreCase("treci")) {
+									cena = 0;
+								}
+								else {
+									System.out.println("Doslo je do greske.");
+								}
 							}
 							Racun racun = new Racun(jmbgUPacijenta(pregled.getPacijent()), pregled.getID(), cena, false);
 							racunUFajl(racun);

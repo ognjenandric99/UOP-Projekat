@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.lang.reflect.Array;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -21,6 +23,8 @@ import accounts.Doktor;
 import accounts.MedicinskaSestra;
 import accounts.Pacijent;
 import net.miginfocom.swing.MigLayout;
+import ostalo.Knjizica;
+import ostalo.Pregled;
 
 public class Login extends GuiFunctions {
 	private ArrayList<Pacijent> pacijenti = ucitajPacijente();
@@ -39,6 +43,7 @@ public class Login extends GuiFunctions {
 	JButton loginbtn = new JButton("Login");
 	JButton cancelbtn = new JButton("Cancel");
 	public Login() {
+		proveritiKnjizice();
 		setTitle("Dom Zdravlja | LOGIN");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int sirinaprozora = (int)screenSize.getWidth()/2;
@@ -158,5 +163,42 @@ public class Login extends GuiFunctions {
 		});
 	}
 	
+	
+	public void proveritiKnjizice() {
+		ArrayList<Knjizica> knjizice = new ArrayList<Knjizica>();
+		ArrayList<Pacijent> pac1 = ucitajPacijente();
+		for (Pacijent pacijent : pac1) {
+			Knjizica knj = pacijent.getKnjizica();
+			if(LocalDateTime.now().compareTo(knj.getDatumIsteka())>=0) {
+				knj.setAktivna(false);
+			}
+			knjizice.add(knj);
+		}
+		String text = "";
+		for (Knjizica knjizica : knjizice) {
+			String istek = knjizica.getDatumIsteka().getYear()+"-"+knjizica.getDatumIsteka().getMonthValue()+"-"+knjizica.getDatumIsteka().getDayOfMonth();
+			text += knjizica.getPacijent()+"|"+knjizica.getKategorija()+"|"+istek+"|"+knjizica.getAktivna().toString()+"\n";
+		}
+		ispisiUFajl("src/ostalo/knjizice.txt", text);
+	}
+	public void ocistiKnjizice() {
+		ArrayList<Knjizica> knjizice = new ArrayList<Knjizica>();
+		String[] linije = getText("src/ostalo/knjizice.txt").split("\\;");
+		for (String string : linije) {
+			String[] tk = string.split("\\|");
+			Boolean stanje = false;
+			for (Knjizica knj : knjizice) {
+				if(knj.getPacijent().equalsIgnoreCase(tk[0])) {
+					stanje=true;
+				}
+			}
+			if(stanje==false) {
+				Knjizica knjizica = new Knjizica(tk[0]);
+				knjizice.add(knjizica);
+			}
+		}
+		sacuvajKnjiziceUFajl(knjizice);
+		
+	}
 	
 }

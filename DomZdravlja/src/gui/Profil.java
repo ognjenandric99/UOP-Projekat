@@ -182,6 +182,7 @@ public class Profil extends KontrolnaTacka2 {
 			add(lUserBrojTelefona);add(txtUserBrojTelefona);
 			
 			add(lUserTip);
+			comboTip.removeAllItems();
 			comboTip.addItem("Pacijent");
 			comboTip.addItem("MedicinskaSestra");
 			comboTip.addItem("Doktor");
@@ -190,6 +191,7 @@ public class Profil extends KontrolnaTacka2 {
 			comboTip.setSelectedItem(String.valueOf(target.getUloga()));
 			
 			add(lUserPol);
+			comboPol.removeAllItems();
 			comboPol.addItem("Musko");
 			comboPol.addItem("Zensko");
 			add(comboPol);
@@ -204,6 +206,7 @@ public class Profil extends KontrolnaTacka2 {
 			txtIzabraniLekarJMBG.setText(target.getLekar().getJmbg());
 			add(txtIzabraniLekarJMBG);
 			
+			comboTipKnjizice.removeAllItems();
 			add(lPacijentKnjizica);add(comboTipKnjizice);
 			comboTipKnjizice.addItem(TipKnjizice.prvi);
 			comboTipKnjizice.addItem(TipKnjizice.drugi);
@@ -567,6 +570,7 @@ public class Profil extends KontrolnaTacka2 {
 			add(txtIzabraniLekarJMBG);
 
 			add(lPacijentKnjizica);add(comboTipKnjizice);
+			comboTipKnjizice.removeAllItems();
 			comboTipKnjizice.addItem(TipKnjizice.prvi);
 			comboTipKnjizice.addItem(TipKnjizice.drugi);
 			comboTipKnjizice.addItem(TipKnjizice.treci);
